@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Footer from '@/components/footer';
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+
 
 const poppins = Poppins({
     weight: ['600', '700'],
@@ -34,6 +36,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <Footer />
       </body>
     </html>
   );
