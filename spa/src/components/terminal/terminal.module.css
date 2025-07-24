@@ -20,7 +20,8 @@
     border-radius: 8px 8px 4px 4px;
     background: #1e1e1e;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .header {
@@ -92,6 +93,7 @@
     word-break: break-word !important;
     overflow-wrap: break-word !important;
 }
+
 
 .line {
     color: #ccc;

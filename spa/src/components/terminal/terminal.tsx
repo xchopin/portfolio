@@ -44,7 +44,7 @@ const Terminal = () => {
                         </pre>
                     </div>
                     <div
-                        className={`${styles.line}`}
+                        className={`${styles.line} hidden md:block`}
                         style={{whiteSpace: 'pre-wrap', color: '#32c146', fontWeight: 600}}
                     >
                         {SPLASH}
