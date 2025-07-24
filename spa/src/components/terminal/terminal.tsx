@@ -1,11 +1,11 @@
 import styles from './terminal.module.css';
 
-const SPLASH = `                    __ _    _ _ _     
-      /\\/\\  _   _  / _\\ | _(_) | |___ 
-     /    \\| | | | \\ \\| |/ / | | / __|
-    / /\\/\\ \\ |_| | _\\ \\   <| | | \\__ \\
-    \\/    \\/\\__, | \\__/_|\\_\\_|_|_|___/
-            |___/                     
+const SPLASH = `                __ _    _ _ _     
+  /\\/\\  _   _  / _\\ | _(_) | |___ 
+ /    \\| | | | \\ \\| |/ / | | / __|
+/ /\\/\\ \\ |_| | _\\ \\   <| | | \\__ \\
+\\/    \\/\\__, | \\__/_|\\_\\_|_|_|___/
+        |___/                     
 `;
 
 const SKILLS = {
@@ -47,7 +47,7 @@ const Terminal = () => {
                         className={`${styles.line}`}
                         style={{whiteSpace: 'pre-wrap', color: '#32c146', fontWeight: 600}}
                     >
-                        <pre>{SPLASH}</pre>
+                        {SPLASH}
                     </div>
 
                     <div className={`${styles.line} ${styles.red}`}>
