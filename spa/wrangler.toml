@@ -1,0 +1,11 @@
+name = "next-app-worker"
+compatibility_date = "2025-07-24"
+
+[build]
+command = "npx @cloudflare/next-on-pages"
+
+[site]
+bucket = ".vercel/output/static"
+
+[experimental]
+upload_format = "modules"
