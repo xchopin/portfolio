@@ -13,7 +13,7 @@ export default function Home() {
         <main className="max-w-4xl mx-auto p-6">
           <section className="flex flex-col md:flex-row items-center justify-between mb-10">
             <div className="md:w-1/2 mb-6 md:mb-0">
-              <h1 className="text-4xl font-bold text-gray-800 mb-2">Hi! I'm Xavier Chopin</h1>
+              <h1 className="text-4xl font-bold text-gray-800 mb-2">Hi! I&apos;m Xavier Chopin</h1>
               <h2 className="text-2xl text-gray-600 mb-4">Senior Software Engineer</h2>
               <p className="text-lg text-gray-600 mb-6">
                 A French tech enthusiast based in the Bay Area, CA specialized in designing and developing scalable systems with Spring Boot and cloud technologies
