@@ -16,13 +16,13 @@ export default function Home() {
         <main className="max-w-5xl mx-auto px-6">
           <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-16 mb-16">
             <div className="md:w-1/2 text-center md:text-left">
-              <h1 className="text-4xl font-bold mb-2  text-gray-600 dark:text-gray-300">
+              <h1 className="text-4xl font-bold mb-2  text-gray-800 dark:text-gray-50">
                 Hi! I&apos;m Xavier Chopin
               </h1>
-              <h2 className="text-2xl mb-4">
+              <h2 className="text-2xl mb-4 text-gray-600 dark:text-gray-200">
                 Senior Software Engineer
               </h2>
-              <p className="text-lg mb-6 text-gray-600 dark:text-gray-300">
+              <p className="text-lg mb-6 text-gray-600 dark:text-gray-200">
                 I build systems that scale, survive, and serve — with clean code, resilience, and real impact.
               </p>
               <a
@@ -54,7 +54,7 @@ export default function Home() {
             </div>
             <div className="md:w-1/2 text-center md:text-left">
               <h2 className="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">About Me</h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
+              <p className="text-lg text-gray-600 dark:text-gray-200">
                 I’m a passionate Software Engineer with over 8 years of experience in building scalable systems using Java, Spring Boot, and cloud technologies. <br />
                 Throughout my journey, my expertise has allowed me to reside in various regions, including France, Canada, and the United States. <br /><br />
                 With these experiences, I was invited to join the Spring Vanguard community by Broadcom, where I weekly meet with core Spring engineers to explore new features and
