@@ -9,7 +9,7 @@ export default function Footer() {
             icon: <FaGithub size={24} />,
         },
         {
-            href: "https://www.linkedin.com/in/xavierchopin",
+            href: "https://www.linkedin.com/in/chopinxavier",
             ariaLabel: "LinkedIn",
             icon: <FaLinkedin size={24} />,
         },
