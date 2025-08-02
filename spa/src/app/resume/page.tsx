@@ -131,7 +131,6 @@ export default function ResumePage() {
                     viewport={{ once: true }}
                     className="mt-20"
                 >
-
                     <Terminal/>
                 </motion.div>
             </section>

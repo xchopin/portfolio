@@ -1,7 +1,9 @@
-import Image from 'next/image';
+'use client';
 
+import Image from 'next/image';
 import { FaLinkedin } from 'react-icons/fa';
 import ThemeBlob from '@/components/theme-blob';
+import {motion} from "framer-motion";
 
 export default function Home() {
   const linkedinProfile = 'https://www.linkedin.com/in/chopinxavier';
@@ -43,22 +45,32 @@ export default function Home() {
               />
             </div>
           </section>
-          <section className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="w-full md:w-1/2 flex justify-center md:justify-start dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 ">
-              <ThemeBlob />
-            </div>
-            <div className="md:w-1/2 text-center md:text-left">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">About Me</h2>
-              <p className="text-lg text-gray-600 dark:text-gray-200">
-                I’m a passionate Software Engineer with over 7 years of experience in building resilient systems. <br />
-                Throughout my journey, my expertise has allowed me to reside in various regions, including France, Canada, and the United States. <br /><br />
-                With these experiences, I was invited to join the Spring Vanguard community by Broadcom, where I weekly meet with core Spring engineers to explore new features and
-                advancements in Java. <br/>
-                Besides programming, I also enjoy making electronic music where both of my passions come together.<br /><br />
-                I currently reside in San Jose, CA, and am looking for opportunities where I can apply my expertise.
-              </p>
-            </div>
-          </section>
+
+          <motion.div
+              key="999"
+              initial={{ opacity: 0, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              viewport={{ once: false }}
+              className=""
+          >
+            <section className="flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="w-full md:w-1/2 flex justify-center md:justify-start dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 ">
+                <ThemeBlob />
+              </div>
+              <div className="md:w-1/2 text-center md:text-left">
+                <h2 className="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">About Me</h2>
+                <p className="text-lg text-gray-600 dark:text-gray-200">
+                  I’m a passionate Software Engineer with over 7 years of experience in building resilient systems. <br />
+                  Throughout my journey, my expertise has allowed me to reside in various regions, including France, Canada, and the United States. <br /><br />
+                  With these experiences, I was invited to join the Spring Vanguard community by Broadcom, where I weekly meet with core Spring engineers to explore new features and
+                  advancements in Java. <br/>
+                  Besides programming, I also enjoy making electronic music where both of my passions come together.<br /><br />
+                  I currently reside in San Jose, CA, and am looking for opportunities where I can apply my expertise.
+                </p>
+              </div>
+            </section>
+          </motion.div>
         </main>
       </div>
   );
