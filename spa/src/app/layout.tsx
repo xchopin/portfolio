@@ -1,5 +1,7 @@
+
 import type { Metadata } from "next";
 import Footer from "@/components/footer";
+import Header from "@/components/header";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
@@ -31,6 +33,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
         <html lang="en" suppressHydrationWarning>
             <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
                 <ThemeProvider attribute="class" enableSystem>
+                    <Header />
                     {children}
                     <Footer />
                 </ThemeProvider>

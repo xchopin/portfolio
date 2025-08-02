@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import Terminal from '@/components/terminal/terminal';
-import { ThemeToggle } from '@/components/theme-toggle';
+
 import { FaLinkedin } from 'react-icons/fa';
 import ThemeBlob from '@/components/theme-blob';
 
@@ -8,11 +7,7 @@ export default function Home() {
   const linkedinProfile = 'https://www.linkedin.com/in/chopinxavier';
 
   return (
-      <div className="min-h-screen font-bold transition-colors">
-        <header className="flex justify-between items-center p-6">
-          <div className="text-lg font-semibold">XC</div>
-          <ThemeToggle />
-        </header>
+      <div className="font-bold transition-colors">
         <main className="max-w-5xl mx-auto px-6">
           <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-16 mb-16">
             <div className="md:w-1/2 text-center md:text-left">
@@ -63,17 +58,6 @@ export default function Home() {
                 I currently reside in San Jose, CA, and am looking for opportunities where I can apply my expertise.
               </p>
             </div>
-          </section>
-
-          <section
-              aria-labelledby="skills-title"
-              className="container section"
-              style={{ margin: 'auto', padding: '1rem' }}
-          >
-            <h2 id="skills-title" className="text-[1.8rem] font-semibold mb-4 text-black dark:text-white">
-              Skills
-            </h2>
-            <Terminal />
           </section>
         </main>
       </div>

@@ -16,7 +16,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-gray-100 dark:bg-gray-950 text-center py-6 text-gray-600 dark:text-gray-300 text-sm">
+        <footer className="mt-24 bg-gray-100 dark:bg-gray-950 text-center py-6 text-gray-600 dark:text-gray-300 text-sm">
             © {new Date().getFullYear()} Xavier Chopin. All rights reserved. <br/>
             Made with ❤️ using Next.js
 
