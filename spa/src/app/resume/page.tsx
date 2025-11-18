@@ -8,21 +8,28 @@ import {FaFilePdf} from "react-icons/fa";
 
 const jobs = [
     {
+        company: 'PayPal (Contractor)',
+        title: 'Software Engineer III',
+        duration: '2025',
+        location: 'San Jose, CA, USA',
+        image: '/resume/paypal.png',
+    },
+    {
         company: 'Desjardins Bank',
-        title: 'Senior Backend Engineer',
+        title: 'Senior Backend Developer',
         duration: '2022 – 2025',
         location: 'Montreal, QC, Canada',
         image: '/resume/desjardins.png',
     },
     {
         company: 'mbiance',
-        title: 'Full-Stack Engineer',
+        title: 'Full-Stack Developer',
         duration: '2021 – 2022',
         location: 'Montreal, QC, Canada',
         image: '/resume/mbiance.png'
     },
     {
-        company: 'BoursoBank',
+        company: 'BoursoBank (Contractor)',
         title: 'Full-Stack Engineer',
         duration: '2020 – 2021',
         location: 'Nancy, France',
@@ -76,14 +83,6 @@ export default function ResumePage() {
 
             <section className="mx-auto mt-20">
                 <div className="relative">
-                    <motion.div
-                        key="0"
-                        initial={{ opacity: 0, y: 0 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                        viewport={{ once: true }}
-                        className="absolute left-[26px] top-0 h-full w-[3px] bg-gray-300 dark:bg-gray-700 z-0"
-                    ></motion.div>
 
                     {jobs.map((job, index) => (
                         <motion.div
@@ -121,6 +120,15 @@ export default function ResumePage() {
                             </div>
                         </motion.div>
                     ))}
+
+                    <motion.div
+                        key="0"
+                        initial={{ opacity: 0, y: 0 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        viewport={{ once: true }}
+                        className="absolute left-[26px] top-0 h-full w-[3px] bg-gray-300 dark:bg-gray-700 z-0"
+                    ></motion.div>
                 </div>
 
                 <motion.div
