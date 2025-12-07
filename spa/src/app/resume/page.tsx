@@ -8,6 +8,13 @@ import {FaFilePdf} from "react-icons/fa";
 
 const jobs = [
     {
+        company: 'Capital One',
+        title: 'Senior Software Engineer',
+        duration: '2025',
+        location: 'San Jose, CA, USA',
+        image: '/resume/capitalone.jpeg',
+    },
+    {
         company: 'PayPal (Contractor)',
         title: 'Software Engineer III',
         duration: '2025',
