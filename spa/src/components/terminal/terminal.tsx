@@ -10,11 +10,12 @@ const SPLASH = `                __ _    _ _ _
 
 const SKILLS = {
     languages:
-        'Java (Spring Boot), SQL (MySQL, MSSQL, PostgreSQL), NoSQL (MongoDB), JavaScript, TypeScript, HTML/CSS, Bash, PowerShell',
+        'Java (Spring Boot), Scala (ZIO, Gatling), SQL (MySQL, MSSQL, Aurora/PostgreSQL), NoSQL (DynamoDB/MongoDB), JavaScript, TypeScript, HTML/CSS, Bash, PowerShell',
     messaging: 'Kafka (Confluent, Apache Avro), RabbitMQ, IBM MQ',
-    testing: 'Mockito, JUnit, Test containers, Gatling (Scala), Postman/Newman',
+    testing: 'Mockito, JUnit, Test containers, Load/Stress tests, Postman/Newman',
+    genAI: 'Claude, Claude Skills, Agents Orchestration, Ollama, SpringAI (MCP)',
     devops:
-        'CI/CD (Concourse, GitHub Actions), Docker, Splunk, Dynatrace, SonarQube, VMware Tanzu, PCF, Linux, Git',
+        'CI/CD (Jenkins, Concourse, GitHub Actions), Docker, Kubernetes, Helm, NewRelic, AWS, Splunk, Dynatrace, SonarQube, VMware Tanzu, PCF, Linux, Git',
     architecture:
         'RESTful APIs, Microservices, Batch processing, Resilience patterns (circuit breaker, retry, etc.), Security (OAuth2, JWT, encryption, data obfuscation), pipelines (build, release, security scanning, QA automation), System Design',
     softskills:
@@ -55,6 +56,13 @@ const Terminal = () => {
                     </div>
                     <div className={styles.line}>
                         <pre>{SKILLS.languages}</pre>
+                    </div>
+
+                    <div className={`${styles.line} ${styles.red}`}>
+                        <pre>&gt; GenAI</pre>
+                    </div>
+                    <div className={styles.line}>
+                        <pre>{SKILLS.genAI}</pre>
                     </div>
 
                     <div className={`${styles.line} ${styles.red}`}>

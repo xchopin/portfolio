@@ -9,8 +9,8 @@ import {FaFilePdf} from "react-icons/fa";
 const jobs = [
     {
         company: 'Capital One',
-        title: 'Senior Software Engineer',
-        duration: '2025',
+        title: 'Principal Associate - Sr. Software Engineer',
+        duration: '2025 - Present',
         location: 'San Jose, CA, USA',
         image: '/resume/capitalone.jpeg',
     },
@@ -32,7 +32,7 @@ const jobs = [
         company: 'mbiance',
         title: 'Full-Stack Developer',
         duration: '2021 – 2022',
-        location: 'Montreal, QC, Canada',
+        location: 'Montréal, QC, Canada',
         image: '/resume/mbiance.png'
     },
     {
@@ -53,7 +53,7 @@ const jobs = [
         company: 'Saint-Gobain',
         title: 'Full-Stack Engineer (Internship)',
         duration: '2017',
-        location: 'Pont-a-Mousson, France',
+        location: 'Pont-à-Mousson, France',
         image: '/resume/saintgobain.png',
     },
 ];
@@ -68,8 +68,8 @@ export default function ResumePage() {
                 <div className="md:w-1/2 text-center md:text-left">
                     <h1 className="text-4xl font-bold mb-4 text-gray-800 dark:text-gray-100">Work Experience</h1>
                     <p className="text-lg text-gray-600 dark:text-gray-200 mb-6">
-                        My career has taken me across different regions of the world, allowing me to better
-                        understand global business needs and learn from diverse cultures.
+                        My career has taken me across different regions of the world, allowing me to better understand
+                        global business needs at both a region-specific and a global level.
                     </p>
 
                     <a
