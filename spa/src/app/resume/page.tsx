@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Terminal from '@/components/terminal/terminal';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import ThemeBlob from "@/components/theme-blob";
 import {FaFilePdf} from "react-icons/fa";
 
@@ -59,6 +59,9 @@ const jobs = [
 ];
 
 export default function ResumePage() {
+    const { scrollYProgress } = useScroll();
+    const lineHeight = useTransform(scrollYProgress, [0, 0.4], ["0%", "100%"]);
+    
     return (
         <main className="max-w-5xl mx-auto px-6">
             <section className="flex flex-col md:flex-row items-center gap-24">
@@ -134,7 +137,8 @@ export default function ResumePage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.5 }}
                         viewport={{ once: true }}
-                        className="absolute left-[26px] top-0 h-full w-[3px] bg-gray-300 dark:bg-gray-700 z-0"
+                        className="absolute left-[26px] top-0 w-[3px] bg-gray-300 dark:bg-gray-700 z-0"
+                        style={{ height: lineHeight }}
                     ></motion.div>
                 </div>
 
