@@ -17,7 +17,7 @@ const SKILLS = {
     devops:
         'CI/CD (Jenkins, Concourse, GitHub Actions), Docker, Kubernetes, Helm, NewRelic, AWS, Splunk, Dynatrace, SonarQube, VMware Tanzu, PCF, Linux, Git',
     architecture:
-        'RESTful APIs, Microservices, Batch processing, Resilience patterns (circuit breaker, retry, etc.), Security (OAuth2, JWT, encryption, data obfuscation), pipelines (build, release, security scanning, QA automation), System Design',
+        'RESTful APIs, Microservices, Batch processing, Temporal, Resilience patterns (circuit breaker, retry, etc.), Security (OAuth2, JWT, encryption, data obfuscation), pipelines (build, release, security scanning, QA automation), System Design',
     softskills:
         'Leadership, Collaboration, Code review, Mentorship, Presentation, Communication (French & English), SAFe/Agile methodologies, JIRA',
 };
