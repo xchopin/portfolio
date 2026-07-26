@@ -47,12 +47,10 @@ export default function Home() {
           </section>
 
           <motion.div
-              key="999"
-              initial={{ opacity: 0, y: 0 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              viewport={{ once: false }}
-              className=""
+              viewport={{ once: true }}
           >
             <section className="flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="w-full md:w-1/2 flex justify-center md:justify-start dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 ">

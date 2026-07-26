@@ -22,16 +22,42 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
+const siteUrl = "https://xchopin.com";
+const description =
+    "Xavier Chopin is a Senior Backend Engineer specialized in Java and based in the Bay Area, CA";
+
 export const metadata: Metadata = {
-    title: "Xavier Chopin",
-    description:
-        "Xavier Chopin is a Senior Backend Engineer specialized in Java and based in the Bay Area, CA",
+    metadataBase: new URL(siteUrl),
+    title: {
+        default: "Xavier Chopin",
+        template: "%s — Xavier Chopin",
+    },
+    description,
+    openGraph: {
+        title: "Xavier Chopin — Senior Software Engineer",
+        description,
+        url: siteUrl,
+        siteName: "Xavier Chopin",
+        locale: "en_US",
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Xavier Chopin — Senior Software Engineer",
+        description,
+    },
 };
 
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
+        <html
+            lang="en"
+            suppressHydrationWarning
+            // Font variables live on <html> so the `@theme` block in globals.css,
+            // which is :root-scoped, can resolve them.
+            className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable}`}
+        >
+            <body className="antialiased">
                 <ThemeProvider attribute="class" enableSystem>
                     <Header />
                     {children}
