@@ -64,7 +64,7 @@ export default function Home() {
                   I’m a passionate Software Engineer with over 9 years of experience in building resilient systems. <br />
                   Throughout my journey, my expertise has allowed me to work and reside in various regions, including France, Canada, and the United States. <br /><br />
                   With these experiences, I was invited to join the Spring Vanguard community by Broadcom, where I weekly meet with core Spring engineers to explore new features and
-                  advancements in Java. <br/>
+                  advancements in the Spring ecosystem. <br/>
                   Besides programming, I also enjoy making electronic music where both of my passions come together.<br /><br />
                 </p>
               </div>

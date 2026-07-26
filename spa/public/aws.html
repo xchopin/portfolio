@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>AWS SAA-C03 Flashcards</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#171e26; --panel2:#1e2731; --line:#2b3743; --line2:#3a4753;
+    --txt:#e6edf3; --muted:#8b9aab; --accent:#ff9900; --blue:#4f9cf9;
+    --again:#e5484d; --hard:#e8a33d; --good:#2ea043;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 20px 90px}
+  .hide{display:none !important}
+
+  header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  h1{margin:0;font-size:19px;letter-spacing:-.02em;font-weight:700}
+  h1 span{color:var(--accent)}
+  .sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+  .streak{text-align:right;font-size:13px;color:var(--muted);white-space:nowrap}
+  .streak b{color:var(--accent);font-size:22px;display:block;line-height:1.1}
+
+  /* ---- tabs ---- */
+  .tabs{display:flex;gap:2px;margin-top:20px;border-bottom:1px solid var(--line)}
+  .tabs button{flex:0 0 auto;min-width:0;background:none;border:none;border-bottom:2px solid transparent;
+    border-radius:0;color:var(--muted);padding:11px 17px;font-size:14.5px;font-weight:650;margin-bottom:-1px}
+  .tabs button:hover{filter:none;color:var(--txt)}
+  .tabs button.on{color:var(--txt);border-bottom-color:var(--accent)}
+
+  /* ---- review tab ---- */
+  .boxes{display:flex;gap:5px;margin:20px 0 6px}
+  .boxes>div{flex:1;text-align:center}
+  .boxes .t{height:26px;border-radius:6px 6px 0 0;background:var(--panel2);position:relative;overflow:hidden;
+    border:1px solid var(--line);border-bottom:none}
+  .boxes .t>i{position:absolute;bottom:0;left:0;right:0;background:var(--blue);transition:height .35s}
+  .boxes .t>span{position:relative;z-index:1;font-size:12px;font-weight:700;line-height:26px}
+  .boxes .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;
+    border:1px solid var(--line);border-top:none;border-radius:0 0 6px 6px;padding:3px 0;background:var(--panel)}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-top:20px;overflow:hidden}
+  .cbar{padding:9px 20px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .cbody{padding:26px 26px 22px}
+  .q{font-size:20px;font-weight:600;line-height:1.45;margin:0}
+  .a{margin:0;padding-top:20px;margin-top:20px;border-top:1px solid var(--line);font-size:15.5px;color:#dbe4ee}
+  .a b,.ta b{color:var(--accent);font-weight:700}
+  .a i,.ta i{color:var(--blue);font-style:normal}
+
+  .acts{display:flex;gap:10px;padding:0 26px 26px;flex-wrap:wrap}
+  button{font:inherit;font-weight:650;border-radius:10px;padding:12px 18px;cursor:pointer;
+    border:1px solid var(--line2);background:var(--panel2);color:var(--txt);transition:.14s;flex:1;min-width:110px}
+  button:hover{filter:brightness(1.22)}
+  button.wide{flex:1 1 100%}
+  button.show{background:var(--accent);border-color:var(--accent);color:#1a1206}
+  button.again{border-color:var(--again);color:#ff9b9e}
+  button.hard{border-color:var(--hard);color:#f3c67f}
+  button.good{border-color:var(--good);color:#7ee093}
+  button small{display:block;font-weight:500;font-size:11px;opacity:.72;margin-top:2px}
+  .ghost{background:none;border-color:var(--line);color:var(--muted);flex:0 0 auto;min-width:0;
+    padding:7px 14px;font-size:13px;font-weight:600}
+  .ghost:hover{color:var(--txt)}
+
+  .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:12px;flex-wrap:wrap}
+  .queue{font-size:13px;color:var(--muted)}
+  .queue b{color:var(--txt)}
+  .tools{display:flex;gap:8px}
+
+  .done{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:34px 28px;margin-top:20px}
+  .done h2{margin:0 0 8px;font-size:22px}
+  .done p{color:var(--muted);margin:0 0 20px;font-size:14.5px}
+  .stats{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:24px}
+  .stat b{display:block;font-size:27px;letter-spacing:-.02em;line-height:1.15}
+  .stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:6px}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+
+  .note{font-size:12.5px;color:var(--muted);background:var(--panel2);border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0;padding:11px 14px;margin-top:18px}
+  kbd{background:var(--panel2);border:1px solid var(--line2);border-bottom-width:2px;border-radius:5px;
+    padding:1px 6px;font:600 11.5px ui-monospace,Menlo,Consolas,monospace;color:var(--txt)}
+
+  /* ---- browse tab ---- */
+  .bhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:20px}
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{flex:0 0 auto;min-width:0;border:1px solid var(--line);background:var(--panel2);color:var(--muted);
+    border-radius:20px;padding:6px 13px;font-size:12.5px;font-weight:650}
+  .chip:hover{filter:none;color:var(--txt)}
+  .chip.on{color:#fff;border-color:transparent}
+  .sec{display:flex;align-items:center;gap:9px;margin:26px 0 11px}
+  .sec .dot{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+  .sec h3{margin:0;font-size:15px;font-weight:700}
+  .sec .cnt{font-size:12px;color:var(--muted)}
+  .sec .rule{flex:1;height:1px;background:var(--line)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden;
+    cursor:pointer;transition:border-color .15s,transform .15s;align-self:start}
+  .tile:hover{border-color:var(--line2);transform:translateY(-1px)}
+  .tile .tbar{padding:6px 12px;font-size:9.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .tile .badge{background:rgba(255,255,255,.24);border-radius:20px;padding:0 7px;font-size:9px;line-height:15px;
+    font-weight:800;letter-spacing:.04em}
+  .tile .tbody{padding:14px 15px 16px;min-height:76px}
+  .tile .tq{font-size:14px;font-weight:600;line-height:1.42}
+  .tile.flipped .tq{font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:10px;
+    padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .tile .ta{font-size:13px;line-height:1.55;color:#dbe4ee;animation:fade .17s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+  .empty{color:var(--muted);font-size:14px;padding:30px 0}
+
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:32px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>AWS SAA-C03 Flashcards <span>&mdash; 104 cards</span></h1>
+      <p class="sub">Spaced-repetition review, or browse the whole deck by theme</p>
+    </div>
+    <div class="streak"><b id="streakN">0</b>day streak</div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="review" class="on">Review</button>
+    <button data-tab="browse">Browse by theme</button>
+  </nav>
+
+  <!-- ============ REVIEW ============ -->
+  <section id="viewReview">
+    <div class="boxes" id="boxes"></div>
+    <div id="stage"></div>
+    <div class="bottom">
+      <div class="queue" id="queue"></div>
+      <div class="tools">
+        <button class="ghost" id="btnAhead">Study ahead</button>
+        <button class="ghost" id="btnReset">Reset progress</button>
+      </div>
+    </div>
+    <div class="note" id="note">
+      <b>How it works:</b> rate a card and it moves between boxes &mdash; Box&nbsp;1 returns tomorrow,
+      Box&nbsp;3 in 4 days, Box&nbsp;5 in 16, Mastered in 45. <b>Again</b> drops it back to Box&nbsp;1 and
+      re-queues it later in the same session. You get up to <b>20 new cards a day</b> so the deck ramps
+      instead of dumping all 104 at once &mdash; use <b>Study ahead</b> to override that.
+      Shortcuts: <kbd>Space</kbd> reveal &middot; <kbd>1</kbd> again &middot; <kbd>2</kbd> hard &middot; <kbd>3</kbd> good.
+    </div>
+  </section>
+
+  <!-- ============ BROWSE ============ -->
+  <section id="viewBrowse" class="hide">
+    <div class="bhead">
+      <div class="chips" id="chips"></div>
+      <div class="tools">
+        <button class="ghost" id="btnFlipAll">Flip all</button>
+        <button class="ghost" id="btnUnflip">Reset flips</button>
+      </div>
+    </div>
+    <div id="grid"></div>
+    <div class="note">
+      <b>Browsing is read-only.</b> Click any card to flip it &mdash; nothing here changes your box
+      levels, due dates, or streak. The badge on each card shows where it currently sits
+      (<b>B1</b>&ndash;<b>B5</b>, or <b>MASTERED</b>).
+    </div>
+  </section>
+
+  <footer>
+    Study aid for the AWS Certified Solutions Architect &ndash; Associate exam.<br>
+    Not affiliated with or endorsed by Amazon Web Services. Verify limits and pricing against current AWS docs.
+  </footer>
+</div>
+
+<script>
+const DECK = [{"i":1,"c":"Compute","q":"Name the five EC2 instance families and one use case each.","a":"<b>General purpose</b> (T, M): web servers, dev. <b>Compute optimized</b> (C): batch, HPC, gaming servers. <b>Memory optimized</b> (R, X, z): in-memory DBs, large caches. <b>Storage optimized</b> (I, D, H): NoSQL, data warehouse, high local IOPS. <b>Accelerated computing</b> (P, G, Inf, Trn): ML training/inference, graphics."},{"i":2,"c":"Compute","q":"Rank the EC2 purchasing options from cheapest to most expensive.","a":"<b>Spot</b> (up to 90% off, interruptible with 2-min notice) &lt; <b>Savings Plans / Reserved Instances</b> (up to 72%, 1 or 3 year commitment) &lt; <b>On-Demand</b> (no commitment) &lt; <b>Dedicated Instances / Hosts</b> (isolation, BYOL, compliance)."},{"i":3,"c":"Compute","q":"What are the three EC2 placement group types and when do you use each?","a":"<b>Cluster</b>: packed in one AZ, lowest network latency and highest throughput - HPC, tightly coupled jobs. <b>Spread</b>: each instance on distinct hardware, max 7 per AZ - small critical fleets. <b>Partition</b>: groups on separate racks - HDFS, Cassandra, Kafka."},{"i":4,"c":"Compute","q":"Instance store vs EBS - what is the key trade-off?","a":"<b>Instance store</b>: physically attached NVMe, highest IOPS and lowest latency, but <b>ephemeral</b> - data is lost on stop, hibernate, or terminate. No snapshots. <b>EBS</b>: network-attached, persists independently of the instance, snapshottable, detachable and re-attachable within the same AZ."},{"i":5,"c":"Compute","q":"Name the Auto Scaling policy types.","a":"<b>Target tracking</b>: hold a metric at a target (CPU at 50%) - the usual answer. <b>Step scaling</b>: tiered response sized to the alarm breach. <b>Simple scaling</b>: one adjustment plus a cooldown (legacy). <b>Scheduled</b>: known time-based patterns. <b>Predictive</b>: ML forecast, pre-scales ahead of demand."},{"i":6,"c":"Compute","q":"ASG health check types - EC2 vs ELB. Which should you use?","a":"<b>EC2</b> checks only hypervisor and instance status - a hung application still looks healthy. <b>ELB</b> checks add the target group's application-level check, so a broken app triggers replacement. Set the ASG health check type to <b>ELB</b> for any load-balanced workload."},{"i":7,"c":"Compute","q":"State the key AWS Lambda limits.","a":"Timeout <b>15 minutes</b> max. Memory <b>128 MB to 10,240 MB</b> (CPU scales with memory). /tmp <b>512 MB to 10 GB</b>. Payload <b>6 MB</b> synchronous, <b>256 KB</b> asynchronous. Deployment package <b>50 MB</b> zipped, <b>250 MB</b> unzipped, <b>10 GB</b> as a container image. Default 1,000 concurrent executions per Region."},{"i":8,"c":"Compute","q":"How do you reduce Lambda cold starts?","a":"<b>Provisioned Concurrency</b> keeps a pool of pre-initialized environments warm - the answer when latency must be predictable. <b>SnapStart</b> for Java. Shrink the deployment package, move heavy init outside the handler, and choose a runtime with fast startup. <b>Reserved concurrency</b> caps concurrency; it does not warm anything."},{"i":9,"c":"Compute","q":"ECS on EC2 vs ECS on Fargate.","a":"<b>EC2 launch type</b>: you own and patch the instances, get GPU/special instance types and daemon placement, and can be cheaper at high steady utilization with Savings Plans. <b>Fargate</b>: serverless, no instances to manage, pay per vCPU-second and GB-second - the low-operational-overhead answer."},{"i":10,"c":"Compute","q":"When do you choose EKS over ECS?","a":"When you need the <b>Kubernetes API</b>: existing K8s manifests, Helm charts, or operators; portability across clouds or on-premises; a team already skilled in Kubernetes. Choose <b>ECS</b> for simpler, AWS-native orchestration with less to operate."},{"i":11,"c":"Compute","q":"Elastic Beanstalk vs CloudFormation vs CDK.","a":"<b>Beanstalk</b>: PaaS - hand it your app, it provisions and manages the environment. <b>CloudFormation</b>: declarative infrastructure as code in JSON/YAML, stacks with drift detection and rollback. <b>CDK</b>: define infrastructure in TypeScript/Python/Java, synthesized down to CloudFormation."},{"i":12,"c":"Compute","q":"AWS Batch vs Lambda for running jobs.","a":"<b>Batch</b>: any duration, Docker-based, job queues with dependencies and priorities, runs on EC2 (including Spot) or Fargate - the answer for long-running or heavyweight batch compute. <b>Lambda</b>: under 15 minutes, event-driven, no infrastructure, per-millisecond billing."},{"i":13,"c":"Storage","q":"List the S3 storage classes by retrieval speed.","a":"<b>Milliseconds</b>: Standard, Intelligent-Tiering, Standard-IA, One Zone-IA, Glacier Instant Retrieval. <b>Minutes to hours</b>: Glacier Flexible Retrieval. <b>Hours</b>: Glacier Deep Archive. All are 11 nines durable; only <b>One Zone-IA</b> stores in a single AZ."},{"i":14,"c":"Storage","q":"What are S3's durability and availability numbers?","a":"<b>Durability: 99.999999999%</b> (11 nines) for every storage class. Data is stored across at least <b>three AZs</b> except One Zone-IA. <b>Availability SLA</b>: 99.99% for Standard, 99.9% for Standard-IA, 99.5% for One Zone-IA."},{"i":15,"c":"Storage","q":"What are the S3 minimum storage durations?","a":"<b>Standard-IA and One Zone-IA: 30 days.</b> <b>Glacier Instant Retrieval and Glacier Flexible Retrieval: 90 days.</b> <b>Glacier Deep Archive: 180 days.</b> Deleting earlier still bills the remainder. S3 Standard and Intelligent-Tiering have no minimum."},{"i":16,"c":"Storage","q":"Name the Glacier retrieval tiers and their times.","a":"<b>Glacier Flexible Retrieval</b>: Expedited 1-5 minutes, Standard 3-5 hours, Bulk 5-12 hours (free). <b>Glacier Deep Archive</b>: Standard 12 hours, Bulk up to 48 hours. <b>Glacier Instant Retrieval</b>: milliseconds, but charged a per-GB retrieval fee."},{"i":17,"c":"Storage","q":"What are the S3 server-side encryption options?","a":"<b>SSE-S3</b>: AWS-managed keys, on by default, zero effort. <b>SSE-KMS</b>: your KMS key - key policies, rotation, and a CloudTrail audit trail of every decrypt (watch KMS request quotas at high volume). <b>SSE-C</b>: you supply the key on every request; AWS stores nothing. Plus <b>client-side</b> encryption."},{"i":18,"c":"Storage","q":"How do Versioning and MFA Delete protect S3 objects?","a":"<b>Versioning</b> retains every version; a delete only writes a <b>delete marker</b>, so removing the marker restores the object. <b>MFA Delete</b> additionally requires an MFA token to permanently delete a version or to suspend versioning, and can only be enabled by the bucket owner's root user."},{"i":19,"c":"Storage","q":"Explain S3 Object Lock modes.","a":"Write-once-read-many for compliance. <b>Governance mode</b>: principals with a special permission can override or shorten retention. <b>Compliance mode</b>: nobody, including the root user, can delete or shorten it until retention expires. <b>Legal Hold</b>: indefinite, toggled independently of any retention period."},{"i":20,"c":"Storage","q":"S3 Cross-Region vs Same-Region Replication.","a":"<b>CRR</b>: disaster recovery, lower latency for distant users, compliance-driven geographic separation. <b>SRR</b>: log aggregation, syncing production to test, sovereignty within a Region. Both require <b>versioning on source and destination</b>, are asynchronous, and are <b>not retroactive</b> - use S3 Batch Replication for pre-existing objects. Replication is not transitive."},{"i":21,"c":"Storage","q":"What are S3's request rate limits and when do you use multipart upload?","a":"Per prefix: <b>3,500</b> PUT/COPY/POST/DELETE and <b>5,500</b> GET/HEAD requests per second - parallelize across prefixes to scale. <b>Multipart upload</b>: recommended above 100 MB, <b>required above 5 GB</b>, max object 5 TB. Use <b>byte-range fetches</b> to parallelize downloads."},{"i":22,"c":"Storage","q":"What does S3 Transfer Acceleration do?","a":"Routes uploads through the nearest <b>CloudFront edge location</b> and over the AWS backbone to the bucket. Use it for <b>large uploads from geographically distant clients</b>. It does not help downloads (that is CloudFront) or same-Region transfers."},{"i":23,"c":"Storage","q":"Compare the EBS volume types.","a":"<b>gp3</b>: default SSD - 3,000 IOPS and 125 MB/s baseline, IOPS provisioned independently of size, ~20% cheaper than gp2. <b>gp2</b>: legacy, 3 IOPS per GB. <b>io2 Block Express</b>: up to 256,000 IOPS, sub-millisecond, 99.999% durable, Multi-Attach. <b>st1</b>: throughput HDD for big sequential scans. <b>sc1</b>: coldest, cheapest."},{"i":24,"c":"Storage","q":"Key facts about EBS snapshots.","a":"<b>Incremental</b> (only changed blocks), stored in S3, <b>Region-scoped</b> - copy cross-Region for DR. You can create an AMI from a snapshot. Snapshots of encrypted volumes are encrypted, and volumes restored from them inherit that encryption. Use <b>Data Lifecycle Manager</b> or AWS Backup to automate."},{"i":25,"c":"Storage","q":"Distinguish EFS from the FSx family.","a":"<b>EFS</b>: managed NFS for Linux, elastic, multi-AZ, POSIX, IA lifecycle tier. <b>FSx for Windows File Server</b>: SMB with Active Directory. <b>FSx for Lustre</b>: HPC and ML, sub-millisecond, hundreds of GB/s, links to an S3 bucket. <b>FSx for NetApp ONTAP</b>: multi-protocol NFS/SMB/iSCSI with dedup and snapshots. <b>FSx for OpenZFS</b>: NFS with ZFS snapshots."},{"i":26,"c":"Storage","q":"Name the Storage Gateway types.","a":"<b>Amazon S3 File Gateway</b>: NFS/SMB share backed by S3 objects. <b>FSx File Gateway</b>: low-latency on-prem access to FSx for Windows. <b>Volume Gateway</b> (iSCSI): <i>cached</i> keeps primary data in S3 with a hot cache on-prem, <i>stored</i> keeps primary data on-prem and backs it up. <b>Tape Gateway</b>: virtual tape library into Glacier."},{"i":27,"c":"Databases","q":"RDS Multi-AZ vs read replica.","a":"<b>Multi-AZ</b>: synchronous standby in another AZ, automatic failover, same DNS endpoint, standby is <b>not readable</b> in a standard deployment - this is availability, not scaling. <b>Read replica</b>: asynchronous, <b>readable</b>, manual promotion, up to 15 for Aurora / 5 for RDS, can be cross-Region - this is read scaling, not automatic failover."},{"i":28,"c":"Databases","q":"Describe Aurora's storage architecture.","a":"<b>Six copies of every data block across three AZs</b>, self-healing, quorum-based. Tolerates losing two copies for writes and three for reads. Storage grows automatically from 10 GB to 128 TB. Up to <b>15 read replicas</b> sharing the same volume. MySQL and PostgreSQL compatible, roughly 5x MySQL throughput."},{"i":29,"c":"Databases","q":"When do you choose Aurora Serverless v2?","a":"<b>Variable, unpredictable, or intermittent</b> workloads. Capacity scales in fine-grained <b>ACU</b> increments in under a second, from a fraction of an ACU up to 256, and you pay per ACU-hour. Ideal for dev/test, infrequently used apps, and spiky traffic where provisioning for peak would waste money."},{"i":30,"c":"Databases","q":"What does Aurora Global Database give you?","a":"One primary Region plus up to <b>five secondary Regions</b>. Typical replication lag <b>under one second</b> (RPO ~1 s) and cross-Region failover in <b>under a minute</b> (RTO). Secondaries are readable with up to 16 replicas each. The answer for global reads plus Region-level disaster recovery on a MySQL/PostgreSQL engine."},{"i":31,"c":"Databases","q":"What problems does RDS Proxy solve?","a":"<b>Connection pooling</b> in front of RDS/Aurora: absorbs connection storms from Lambda and containers, reduces failover time by <b>up to 66%</b>, enforces <b>IAM authentication</b>, and keeps credentials in Secrets Manager. Deployed inside your VPC and never publicly accessible."},{"i":32,"c":"Databases","q":"DynamoDB on-demand vs provisioned capacity.","a":"<b>On-demand</b>: no capacity planning, instant scaling, pay per request - new, unpredictable, or spiky workloads. <b>Provisioned</b>: set RCUs and WCUs with auto scaling, notably cheaper for steady predictable traffic, and eligible for reserved capacity."},{"i":33,"c":"Databases","q":"Do the DynamoDB capacity unit math.","a":"<b>1 RCU</b> = one <i>strongly</i> consistent read per second of up to <b>4 KB</b>, or two <i>eventually</i> consistent reads. <b>1 WCU</b> = one write per second of up to <b>1 KB</b>. Transactional reads and writes cost <b>double</b>. Always round item size up to the next unit boundary."},{"i":34,"c":"Databases","q":"DynamoDB GSI vs LSI.","a":"<b>GSI</b>: different partition <i>and</i> sort key, can be added or dropped any time, has its own capacity, <b>eventually consistent only</b>, no size limit. <b>LSI</b>: same partition key with a different sort key, <b>must be created with the table</b>, shares table capacity, supports strong consistency, and caps that partition at 10 GB."},{"i":35,"c":"Databases","q":"What are DynamoDB Streams used for?","a":"An ordered, <b>24-hour</b> log of item-level changes. Triggers Lambda for event-driven processing, feeds Kinesis or OpenSearch, powers <b>global tables</b> replication, and supports audit trails and cross-service materialized views."},{"i":36,"c":"Databases","q":"When do you reach for DynamoDB global tables?","a":"Multi-Region, <b>multi-active</b> read and write access with single-digit millisecond local latency, plus Region-level resilience. Conflicts resolve <b>last writer wins</b>. Requires DynamoDB Streams enabled."},{"i":37,"c":"Databases","q":"Map each workload to its purpose-built AWS database.","a":"Relational OLTP: <b>RDS / Aurora</b>. Key-value at any scale: <b>DynamoDB</b>. In-memory cache: <b>ElastiCache</b> (durable: <b>MemoryDB</b>). Document/MongoDB: <b>DocumentDB</b>. Graph: <b>Neptune</b>. Time series: <b>Timestream</b>. Immutable ledger: <b>QLDB</b>. Cassandra: <b>Keyspaces</b>. Analytics warehouse: <b>Redshift</b>."},{"i":38,"c":"Databases","q":"What is Redshift for - and what is it not for?","a":"<b>For</b>: columnar, massively parallel <b>OLAP</b> and BI reporting over terabytes to petabytes. <b>Spectrum</b> queries S3 directly without loading; <b>RA3</b> nodes separate compute from storage. <b>Not for</b>: OLTP, high-concurrency single-row lookups, or as an application's primary database."},{"i":39,"c":"Databases","q":"Athena vs Redshift vs EMR.","a":"<b>Athena</b>: serverless SQL directly over S3, pay per TB scanned - ad hoc queries, log analysis, no cluster. <b>Redshift</b>: provisioned warehouse for complex joins and recurring dashboards. <b>EMR</b>: managed Hadoop, Spark, Hive, Presto for custom big-data pipelines and ML preprocessing."},{"i":40,"c":"Databases","q":"ElastiCache for Redis vs Memcached.","a":"<b>Redis</b>: persistence, replication, Multi-AZ automatic failover, backups, sorted sets and lists, pub/sub, transactions, geospatial - pick it whenever HA or rich data types matter. <b>Memcached</b>: simple multi-threaded key-value cache, horizontal sharding, <b>no persistence, replication, or failover</b>."},{"i":41,"c":"Networking","q":"What are the core VPC building blocks?","a":"<b>CIDR</b> /16 to /28. <b>Subnets</b> are AZ-scoped. <b>Route tables</b> direct traffic. <b>Internet gateway</b> for public subnets, <b>NAT gateway</b> for private-subnet egress. <b>Security groups</b> guard instances (stateful), <b>NACLs</b> guard subnets (stateless). <b>VPC endpoints</b> for private service access."},{"i":42,"c":"Networking","q":"How many IP addresses does AWS reserve in each subnet?","a":"<b>Five.</b> The network address, the VPC router (.1), the DNS server (.2), one reserved for future use (.3), and the broadcast address (last). So a <b>/24 yields 251 usable</b> addresses, and a /28 yields 11."},{"i":43,"c":"Networking","q":"Security group vs NACL - state every difference that matters.","a":"<b>SG</b>: instance/ENI level, <b>stateful</b> (return traffic auto-allowed), <b>allow rules only</b>, all rules evaluated together. <b>NACL</b>: subnet level, <b>stateless</b> (needs explicit inbound and outbound), supports <b>allow and deny</b>, rules processed in number order and the lowest match wins. Only a NACL can block a specific IP."},{"i":44,"c":"Networking","q":"How do public, private, and NAT routing differ?","a":"<b>Public subnet</b>: route 0.0.0.0/0 to the <b>internet gateway</b>, resources have public IPs. <b>Private subnet</b>: route 0.0.0.0/0 to a <b>NAT gateway</b> that sits in a public subnet - outbound only. A NAT gateway is <b>AZ-scoped</b>, so deploy one per AZ to avoid a single point of failure and cross-AZ charges."},{"i":45,"c":"Networking","q":"Gateway endpoint vs interface endpoint.","a":"<b>Gateway endpoint</b>: <b>S3 and DynamoDB only</b>, added as a route table entry, <b>no hourly or data charge</b> - the cost-optimization answer for NAT gateway bills. <b>Interface endpoint (PrivateLink)</b>: an ENI with a private IP for most other services and partner/SaaS offerings, supports security groups, billed per hour plus per GB."},{"i":46,"c":"Networking","q":"What are the constraints on VPC peering?","a":"<b>Not transitive</b> - if A peers B and B peers C, A cannot reach C. <b>No overlapping CIDR blocks.</b> Route tables must be updated on <b>both</b> sides. Cross-account and cross-Region peering are supported. N VPCs need N(N-1)/2 connections, which is why large meshes move to Transit Gateway."},{"i":47,"c":"Networking","q":"What problem does Transit Gateway solve?","a":"A <b>hub-and-spoke</b> router providing <b>transitive</b> connectivity among hundreds or thousands of VPCs, VPN connections, and Direct Connect gateways - replacing an unmanageable peering mesh. Supports multiple route tables for network segmentation, cross-Region peering, and multicast."},{"i":48,"c":"Networking","q":"Direct Connect vs Site-to-Site VPN.","a":"<b>Direct Connect</b>: dedicated private circuit, <b>consistent</b> low latency, 1/10/100 Gbps, lower data transfer rates, but takes weeks to provision. <b>VPN</b>: IPsec over the public internet, live in minutes, cheap, but latency and throughput vary. Best practice for hybrid resilience: <b>DX with a VPN as backup</b>."},{"i":49,"c":"Networking","q":"How do you make Direct Connect highly available?","a":"<b>Maximum resilience</b>: two connections terminating at <b>two separate DX locations</b> with separate devices. <b>High resilience</b>: two connections at two locations. A <b>Direct Connect gateway</b> lets one DX reach VPCs across Regions and accounts. A <b>Site-to-Site VPN</b> is the low-cost failover path."},{"i":50,"c":"Networking","q":"Compare the Elastic Load Balancer types.","a":"<b>ALB</b>: layer 7 HTTP/HTTPS, routes by path, host, header, query, or method; WebSocket; Lambda and container targets; WAF integration. <b>NLB</b>: layer 4 TCP/UDP/TLS, <b>static IP per AZ</b>, millions of requests per second, ultra-low latency, preserves source IP. <b>Gateway Load Balancer</b>: layer 3, inserts third-party firewalls and IDS transparently."},{"i":51,"c":"Networking","q":"What target types and behaviors do ALB target groups support?","a":"Targets: <b>instance, IP, Lambda</b>, and <b>Application Load Balancer</b> (for NLB-to-ALB chaining). <b>Sticky sessions</b> via cookies keep a client on one target. <b>Deregistration delay</b> (connection draining) lets in-flight requests finish before a target is removed. Health checks decide target eligibility."},{"i":52,"c":"Networking","q":"List the Route 53 routing policies.","a":"<b>Simple</b>. <b>Weighted</b>: percentage split, canary and A/B testing. <b>Latency</b>: lowest-latency Region. <b>Failover</b>: active/passive DR driven by a health check. <b>Geolocation</b>: by user location, for compliance or localization. <b>Geoproximity</b>: bias traffic toward a Region. <b>Multivalue answer</b>: up to eight healthy records for client-side load balancing. <b>IP-based</b>."},{"i":53,"c":"Networking","q":"Route 53 alias record vs CNAME.","a":"<b>Alias</b>: AWS-specific, <b>free queries</b>, works at the <b>zone apex</b> (example.com), points at AWS targets such as ALB, CloudFront, S3 website endpoints, and API Gateway, and is health-check aware. <b>CNAME</b>: standard DNS, <b>cannot be used at the zone apex</b>, billed per query, can target any hostname."},{"i":54,"c":"Networking","q":"What are the essential CloudFront features?","a":"Global CDN with edge caching. <b>Origin Access Control</b> locks an S3 origin to CloudFront only. <b>Signed URLs</b> for one file, <b>signed cookies</b> for many. Cache behaviors per path pattern with TTL and cache-key control. <b>CloudFront Functions</b> (lightweight, viewer events) and <b>Lambda@Edge</b> (heavier, origin events). Field-level encryption; geo restriction; free ACM certs from us-east-1."},{"i":55,"c":"Networking","q":"Global Accelerator vs CloudFront.","a":"<b>Global Accelerator</b>: two <b>static anycast IPs</b>, works with <b>TCP and UDP on any port</b>, no caching, health-check failover between Regions in seconds - gaming, VoIP, IoT, static-IP requirements. <b>CloudFront</b>: HTTP/HTTPS only, caches content at the edge, best for websites, APIs, and media."},{"i":56,"c":"Networking","q":"What do VPC Flow Logs capture, and what do they miss?","a":"IP traffic <b>metadata</b> - source and destination, ports, protocol, bytes, and ACCEPT or REJECT - at the VPC, subnet, or ENI level, published to CloudWatch Logs, S3, or Data Firehose. They do <b>not</b> capture packet payloads; use <b>VPC Traffic Mirroring</b> for full packet capture."},{"i":57,"c":"Security","q":"State the IAM policy evaluation logic.","a":"An <b>explicit DENY always wins</b>. Otherwise an <b>explicit ALLOW</b> is needed; with none, the <b>default is an implicit deny</b>. For the request to succeed, every applicable layer must permit it: SCPs, identity policies, resource policies, permission boundaries, and session policies."},{"i":58,"c":"Security","q":"Why are IAM roles preferred over IAM users for workloads?","a":"Roles issue <b>temporary, automatically rotated STS credentials</b> - nothing is stored on disk or in code, and compromise is time-boxed. They are assumed by EC2 (instance profile), Lambda, ECS tasks, other accounts, and federated identities. IAM users carry <b>long-lived access keys</b>, which is the credential you are trying to eliminate."},{"i":59,"c":"Security","q":"What can and cannot a Service Control Policy do?","a":"<b>Can</b>: define the maximum available permissions for accounts in an Organization, and it applies even to the <b>account root user</b> - the only way to truly prevent an action in a member account. <b>Cannot</b>: grant any permission by itself, and it does <b>not</b> affect the management account or service-linked roles."},{"i":60,"c":"Security","q":"What does IAM Identity Center provide?","a":"Centralized <b>workforce single sign-on</b> across every account in an Organization. <b>Permission sets</b> map users and groups to roles per account. Supports an external SAML 2.0 or OIDC identity provider as the identity source, with <b>SCIM</b> for automated user provisioning and deprovisioning."},{"i":61,"c":"Security","q":"Describe the correct cross-account access pattern.","a":"In the <b>target</b> account create a role whose <b>trust policy</b> names the source account or principal, and attach the needed permissions. The source principal calls <b>sts:AssumeRole</b> for temporary credentials. For third-party vendors, require an <b>External ID</b> in the trust policy to prevent the <b>confused deputy</b> problem."},{"i":62,"c":"Security","q":"What are the KMS key types?","a":"<b>AWS owned</b>: invisible to you, used inside AWS services. <b>AWS managed</b> (aws/service aliases): free, rotate automatically every year, policy controlled by the service. <b>Customer managed</b>: you own the key policy, grants, aliases, and optional annual rotation - $1/month plus API requests. Symmetric or asymmetric; <b>multi-Region keys</b> allow decrypt in another Region."},{"i":63,"c":"Security","q":"KMS vs CloudHSM.","a":"<b>KMS</b>: fully managed, multi-tenant FIPS-validated HSMs, deeply integrated with AWS services, AWS handles availability and durability - the default choice. <b>CloudHSM</b>: <b>dedicated single-tenant</b> FIPS 140-2 Level 3 HSMs where <b>AWS has no access to your keys</b> and cannot recover them - required for sole key control, custom cryptography, or specific regulatory mandates."},{"i":64,"c":"Security","q":"Explain envelope encryption.","a":"KMS generates a <b>data key</b> and returns it in both plaintext and encrypted form. Your application encrypts the bulk data locally with the plaintext key, discards it from memory, and stores the <b>encrypted data key</b> beside the ciphertext. This sidesteps KMS's <b>4 KB direct-encrypt limit</b> and keeps bulk crypto fast and local."},{"i":65,"c":"Security","q":"Secrets Manager vs SSM Parameter Store.","a":"<b>Secrets Manager</b>: built-in <b>automatic rotation</b> (native for RDS, Redshift, DocumentDB), cross-Region replication, resource policies for cross-account sharing, random secret generation - about $0.40 per secret per month. <b>Parameter Store</b>: free standard tier, <b>SecureString</b> encrypted with KMS, hierarchical config, but <b>no built-in rotation</b>."},{"i":66,"c":"Security","q":"WAF vs Shield Standard vs Shield Advanced.","a":"<b>WAF</b>: layer 7 inspection on CloudFront, ALB, API Gateway, AppSync, and Cognito - SQL injection, XSS, geo-match, IP sets, <b>rate-based rules</b>, and AWS managed rule groups. <b>Shield Standard</b>: free, automatic layer 3 and 4 DDoS protection. <b>Shield Advanced</b>: about $3,000/month, adds the DDoS Response Team, <b>cost protection</b> for attack-driven scaling, and advanced layer 7 detection."},{"i":67,"c":"Security","q":"GuardDuty vs Inspector vs Macie vs Detective.","a":"<b>GuardDuty</b>: continuous <b>threat detection</b> from CloudTrail, VPC Flow Logs, and DNS logs. <b>Inspector</b>: automated <b>vulnerability and CVE scanning</b> of EC2, ECR images, and Lambda. <b>Macie</b>: discovers and classifies <b>sensitive data such as PII</b> in S3. <b>Detective</b>: analyzes and visualizes the <b>root cause</b> of a finding across linked events."},{"i":68,"c":"Security","q":"AWS Config vs CloudTrail vs CloudWatch.","a":"<b>Config</b>: resource <b>configuration state</b> over time plus compliance rules and auto-remediation - \"is this resource configured correctly, and what changed?\" <b>CloudTrail</b>: <b>API call audit log</b> - \"who did what, when, and from which IP?\" <b>CloudWatch</b>: metrics, logs, and alarms - \"how is it performing right now?\""},{"i":69,"c":"Security","q":"What should you know about ACM certificates?","a":"ACM issues <b>free public TLS certificates</b> and renews them automatically, integrating with ELB, CloudFront, API Gateway, and App Runner. Certificates for <b>CloudFront must live in us-east-1</b>. ACM will not export a public certificate's private key - use <b>ACM Private CA</b> or import a third-party certificate if you must install it on EC2 yourself."},{"i":70,"c":"Security","q":"Network Firewall vs security groups and NACLs.","a":"<b>AWS Network Firewall</b>: managed <b>stateful</b> firewall and IDS/IPS at the VPC perimeter with <b>domain name filtering</b>, deep packet inspection, and Suricata-compatible rules, centrally managed via Firewall Manager. <b>SGs and NACLs</b>: basic layer 3 and 4 allow/deny with no inspection of payloads."},{"i":71,"c":"Integration","q":"State the core SQS mechanics and defaults.","a":"Pull-based. Retention 60 seconds to <b>14 days</b> (default 4 days). <b>Visibility timeout</b> default 30 seconds, max 12 hours, hides an in-flight message. <b>Dead-letter queue</b> captures messages past maxReceiveCount. <b>Long polling</b> up to 20 seconds cuts empty receives and cost. Message size 256 KB (larger via the S3 extended client)."},{"i":72,"c":"Integration","q":"SQS Standard vs FIFO.","a":"<b>Standard</b>: nearly unlimited throughput, <b>at-least-once</b> delivery, <b>best-effort ordering</b> - design consumers to be idempotent. <b>FIFO</b>: strict ordering within a <b>message group ID</b>, <b>exactly-once</b> processing via a <b>5-minute deduplication window</b>, 300 messages/second (3,000 batched), or far higher in high-throughput mode. FIFO queue names must end in .fifo."},{"i":73,"c":"Integration","q":"What are the essentials of Amazon SNS?","a":"Push-based publish/subscribe <b>fanout</b> to SQS, Lambda, HTTP/S endpoints, email, SMS, mobile push, and Data Firehose. Supports <b>message filtering</b> by attributes, <b>FIFO topics</b>, encryption, and DLQs. <b>SNS plus SQS fanout</b> is the classic pattern for durable parallel processing of one event by many consumers."},{"i":74,"c":"Integration","q":"SQS vs SNS vs EventBridge - how do you choose?","a":"<b>SQS</b>: buffer and decouple; one logical consumer group drains the queue. <b>SNS</b>: deliver the same message to many subscribers immediately. <b>EventBridge</b>: event bus with <b>content-based routing rules</b>, schema registry, 20+ SaaS partner sources, <b>scheduled</b> events, and <b>archive and replay</b> - the answer for event-driven architectures and third-party integrations."},{"i":75,"c":"Integration","q":"Kinesis Data Streams vs Data Firehose.","a":"<b>Streams</b>: true real time (~200 ms), shard-based or on-demand, retention 1 to <b>365 days</b> so consumers can <b>replay</b>, multiple independent consumers, you write the consumer code. <b>Firehose</b>: fully managed <b>near</b> real time (minimum 60-second buffer), delivers to S3, Redshift, OpenSearch, or Splunk with optional transformation - <b>no storage, no replay, no consumers</b>."},{"i":76,"c":"Integration","q":"What are the Kinesis shard throughput limits?","a":"Per shard <b>in</b>: 1 MB/s or 1,000 records/s. Per shard <b>out</b>: 2 MB/s shared across all standard consumers, or <b>2 MB/s dedicated per consumer</b> with <b>enhanced fan-out</b>. Scale by splitting and merging shards, or use on-demand mode. Hot shards mean a poorly distributed partition key."},{"i":77,"c":"Integration","q":"When do you use AWS Step Functions?","a":"Serverless <b>orchestration</b> of multi-step workflows as a state machine, with built-in retries, error catching, parallel and map states, choice branching, and human approval. <b>Standard</b> workflows: up to one year, exactly-once, fully auditable execution history. <b>Express</b>: up to 5 minutes, at-least-once, very high event rates and lower cost."},{"i":78,"c":"Integration","q":"Compare the API Gateway API types.","a":"<b>REST API</b>: the full feature set - API keys and usage plans, request/response validation and transformation, response caching, WAF, private endpoints, canary deployments. <b>HTTP API</b>: up to 70% cheaper and lower latency with fewer features, native JWT/OIDC authorizers. <b>WebSocket API</b>: bidirectional real-time. Authorizers: IAM, Cognito, or Lambda."},{"i":79,"c":"Resilience","q":"Name the four disaster recovery strategies in order of RTO and cost.","a":"<b>Backup and restore</b>: hours, cheapest, nothing running. <b>Pilot light</b>: tens of minutes, core data replicating and minimal services idle. <b>Warm standby</b>: minutes, a scaled-down but fully functional copy always live. <b>Multi-site active/active</b>: near zero, full capacity in both Regions, most expensive."},{"i":80,"c":"Resilience","q":"RTO vs RPO - define both precisely.","a":"<b>RTO (Recovery Time Objective)</b>: the maximum acceptable <b>downtime</b> - how long until service is back. Driven by your failover mechanism. <b>RPO (Recovery Point Objective)</b>: the maximum acceptable <b>data loss</b>, measured as time since the last recoverable point. Driven by backup or replication frequency."},{"i":81,"c":"Resilience","q":"What does AWS Backup cover?","a":"Centralized, <b>policy-driven</b> backup across EBS, EFS, RDS, Aurora, DynamoDB, FSx, DocumentDB, Neptune, Storage Gateway, S3, and EC2 - with backup plans, <b>cross-account and cross-Region copies</b>, <b>Vault Lock</b> for WORM immutability, and compliance reporting. The answer whenever \"centralized\" and \"multiple services\" appear together."},{"i":82,"c":"Resilience","q":"List the Well-Architected Framework pillars.","a":"<b>Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability.</b> Six pillars. Reliability covers recovery and scaling; Performance Efficiency covers selecting and evolving the right resources."},{"i":83,"c":"Resilience","q":"Match each migration service to its job.","a":"<b>DMS</b>: database migration with minimal downtime via change data capture; pair with <b>SCT</b> for heterogeneous engine conversion. <b>Application Migration Service (MGN)</b>: lift-and-shift servers. <b>DataSync</b>: automated online file transfer to S3, EFS, or FSx. <b>Snow family</b>: offline bulk transfer. <b>Transfer Family</b>: managed SFTP/FTPS/FTP into S3 or EFS."},{"i":84,"c":"Resilience","q":"How do you size a Snow family transfer?","a":"Rule of thumb: if transferring over the network would take <b>more than about a week</b>, ship a device. <b>Snowcone</b>: 8 TB HDD or 14 TB SSD, rugged edge use. <b>Snowball Edge</b>: about 80 TB usable, with Compute Optimized and Storage Optimized variants. <b>Snowmobile</b>: up to <b>100 PB</b> in a shipping container."},{"i":85,"c":"Resilience","q":"What does AWS Organizations give you beyond one bill?","a":"<b>Consolidated billing</b> with volume discounts aggregated across accounts and <b>shared Reserved Instance and Savings Plans</b> benefits. Plus <b>SCP</b> guardrails, organizational units for structure, service opt-in at the org level (GuardDuty, Config, CloudTrail org trails), and <b>Control Tower</b> for an automated, governed landing zone."},{"i":86,"c":"Resilience","q":"What does Trusted Advisor check?","a":"Five categories: <b>cost optimization, performance, security, fault tolerance, and service limits</b>. Basic and Developer support plans see only a limited core set (mostly security and limits); <b>Business and Enterprise</b> plans unlock all checks plus programmatic API access and weekly notifications."},{"i":87,"c":"Resilience","q":"Which Systems Manager capabilities show up on the exam?","a":"<b>Session Manager</b>: audited shell access with <b>no SSH keys, no bastion host, and no inbound ports</b> - the answer for secure administrative access. <b>Patch Manager</b> with patch baselines and maintenance windows. <b>Run Command</b>, <b>Automation</b> runbooks, <b>Parameter Store</b>, and <b>Fleet Manager / Inventory</b>."},{"i":88,"c":"Resilience","q":"Give the reference pattern for a highly available stateless tier.","a":"An <b>Auto Scaling group across at least two AZs</b> behind an ALB, with the ASG using <b>ELB health checks</b>, a <b>deregistration delay</b> plus <b>lifecycle hooks</b> for graceful replacement, and <b>state stored externally</b> in DynamoDB or ElastiCache rather than on the instance."},{"i":89,"c":"Cost","q":"Savings Plans vs Reserved Instances - which flexibility do you get?","a":"<b>Compute Savings Plans</b>: up to 66%, applies across any instance family, size, Region, OS, and tenancy, <b>plus Fargate and Lambda</b> - the most flexible. <b>EC2 Instance Savings Plans</b>: up to 72%, locked to one family in one Region. <b>Standard RI</b>: largest discount, least flexible, sellable in the Marketplace. <b>Convertible RI</b>: exchangeable for a smaller discount."},{"i":90,"c":"Cost","q":"State the data transfer pricing rules of thumb.","a":"<b>Inbound from the internet: free.</b> Same-AZ over private IPs: free. <b>Cross-AZ: charged in both directions.</b> Cross-Region: charged. <b>Out to the internet: the most expensive</b> - and CloudFront egress is cheaper than EC2 egress. Gateway endpoints to <b>S3 and DynamoDB: free</b>, which is why they beat a NAT gateway."},{"i":91,"c":"Cost","q":"What are the most common sources of unexpected AWS spend?","a":"<b>NAT gateway</b> data processing, <b>cross-AZ</b> traffic, idle load balancers and unattached <b>Elastic IPs</b>, orphaned <b>EBS volumes and old snapshots</b>, over-provisioned <b>gp2</b>, forgotten dev and test environments, <b>incomplete S3 multipart uploads</b>, and over-retained CloudWatch Logs."},{"i":92,"c":"Cost","q":"Cost Explorer vs Budgets vs the Cost and Usage Report.","a":"<b>Cost Explorer</b>: visualize and filter historical spend, forecast, and get rightsizing and Savings Plans recommendations. <b>AWS Budgets</b>: set cost, usage, or coverage thresholds and trigger alerts or automated actions. <b>Cost and Usage Report</b>: the raw hourly line-item data delivered to S3 for analysis in Athena or QuickSight."},{"i":93,"c":"Cost","q":"What does AWS Compute Optimizer do?","a":"Analyzes CloudWatch metrics and recommends <b>rightsized</b> configurations for EC2 instances, Auto Scaling groups, EBS volumes, Lambda functions, and ECS on Fargate - flagging over-provisioned and under-provisioned resources. It is <b>free</b>, and it is the answer to \"identify over-provisioned resources with minimal effort.\""},{"i":94,"c":"Cost","q":"What levers reduce S3 cost?","a":"Match the <b>storage class</b> to the access pattern with lifecycle rules; <b>Intelligent-Tiering</b> when the pattern is unknown; <b>abort incomplete multipart uploads</b> via lifecycle rule; <b>S3 Storage Lens</b> for visibility; <b>Requester Pays</b> for shared datasets; a <b>gateway endpoint</b> to avoid NAT charges; and compress or aggregate small objects."},{"i":95,"c":"Cost","q":"When is serverless genuinely cheaper than always-on compute?","a":"When traffic is <b>spiky, low-volume, or intermittent with long idle periods</b> - you stop paying when nothing runs, and you drop the load balancer and instance floor. Conversely, <b>steady high-utilization</b> workloads are usually cheaper on EC2 or containers covered by a Savings Plan."},{"i":96,"c":"Cost","q":"How do you make cost allocation actually work?","a":"Define a tagging standard, <b>activate cost allocation tags</b> in the Billing console (they are not retroactive), enforce compliance with <b>Tag Policies</b> or SCPs and detect drift with AWS Config, then group Cost Explorer and the CUR by tag. Separate <b>accounts</b> per team or environment give the cleanest boundary."},{"i":97,"c":"Cost","q":"What drives licensing and tenancy costs?","a":"<b>Dedicated Hosts</b>: you see sockets and cores, required for socket- or core-based <b>BYOL</b> and the strictest isolation; billed per host. <b>Dedicated Instances</b>: isolated hardware without host visibility. <b>Default shared tenancy</b>: cheapest. <b>License Manager</b> tracks and enforces license entitlements."},{"i":98,"c":"Cost","q":"How do you cut RDS and Aurora spend?","a":"Rightsize instances and move to <b>Graviton</b>; <b>stop or downsize non-production</b> outside business hours; <b>Aurora Serverless v2</b> for variable load; <b>Reserved Instances</b> for steady production; trim backup retention and old snapshots; add read replicas only where reads are genuinely the bottleneck; and delete idle instances rather than leaving them stopped indefinitely (storage still bills)."},{"i":99,"c":"Compare","q":"S3 Intelligent-Tiering vs Glacier Instant Retrieval.","a":"Both give <b>millisecond</b> access. <b>Intelligent-Tiering</b>: AWS moves objects automatically, <b>no retrieval fees</b>, no minimum duration, but a monitoring fee per 1,000 objects - pick it for <b>unknown or changing</b> patterns. <b>Glacier Instant Retrieval</b>: cheapest millisecond-access storage but charges <b>per-GB retrieval</b> with a <b>90-day minimum</b> - pick it for a <b>known, rare</b> access pattern on large objects."},{"i":100,"c":"Compare","q":"ALB vs NLB - how do you decide in one line?","a":"Need a <b>static IP</b>, <b>TCP or UDP</b>, extreme throughput at ultra-low latency, source IP preservation, or a non-HTTP protocol? <b>NLB.</b> Need routing by <b>path, host, or header</b>, WAF, authentication, Lambda or container targets, or WebSocket over HTTP? <b>ALB.</b>"},{"i":101,"c":"Compare","q":"EBS vs EFS vs S3.","a":"<b>EBS</b>: block storage attached to <b>one instance</b> in <b>one AZ</b> - boot volumes, databases. <b>EFS</b>: shared <b>POSIX file system</b> mounted by many instances across AZs, elastic capacity - content management, shared home directories. <b>S3</b>: <b>object</b> storage over HTTP, effectively unlimited, 11 nines durable - static assets, data lakes, backups. Not a file system."},{"i":102,"c":"Compare","q":"Multi-AZ vs Multi-Region - what are you actually buying?","a":"<b>Multi-AZ</b>: <b>high availability</b> within one Region. Synchronous replication, automatic failover, minimal added complexity - the default expectation for production. <b>Multi-Region</b>: <b>disaster recovery</b> and global low latency. Usually asynchronous, deliberate failover, materially higher cost and complexity - justify it with a stated RTO/RPO or a compliance requirement."},{"i":103,"c":"Compare","q":"Scale up vs scale out - which does the exam prefer?","a":"<b>Scale up (vertical)</b>: a bigger instance. Simple, but has a hard ceiling, usually needs a restart, and leaves a single point of failure. <b>Scale out (horizontal)</b>: more instances behind a load balancer. Requires <b>stateless</b> design with externalized session state, but is elastic and fault tolerant - <b>this is almost always the intended answer</b>."},{"i":104,"c":"Compare","q":"Cognito user pools vs identity pools.","a":"<b>User pool</b>: the <b>directory</b> - signs users up and in, issues JWTs, offers a hosted UI, MFA, and federation with Google, Facebook, or SAML. <b>Identity pool (federated identities)</b>: exchanges a verified identity (from a user pool or a social/SAML provider) for <b>temporary AWS credentials</b> so the app can call S3, DynamoDB, and other AWS services directly."}];
+
+const COLOR = {Compute:"#D95F02",Storage:"#1B7837",Databases:"#2166AC",Networking:"#6A3D9A",
+  Security:"#B2182B",Integration:"#00767B",Resilience:"#8C6D1F",Cost:"#33691E",Compare:"#AD1457"};
+const BOX_DAYS  = {1:1, 2:2, 3:4, 4:8, 5:16, 6:45};
+const BOX_LABEL = {1:"Box 1", 2:"Box 2", 3:"Box 3", 4:"Box 4", 5:"Box 5", 6:"Mastered"};
+const BOX_SHORT = {1:"B1", 2:"B2", 3:"B3", 4:"B4", 5:"B5", 6:"MASTERED"};
+const KEY = "saa_c03_leitner_v1";
+const NEW_PER_DAY = 20;   // day one is a 20-card session, not all 104
+const AHEAD_BATCH = 20;   // size of a "study ahead" top-up
+const THEMES = DECK.map(c=>c.c).filter((v,i,a)=>a.indexOf(v)===i);
+
+/* ---------- storage (degrades gracefully when localStorage is blocked) ---------- */
+let canStore = true;
+try { localStorage.setItem(KEY+"_t","1"); localStorage.removeItem(KEY+"_t"); }
+catch(e){ canStore = false; }
+
+const today = () => new Date().toISOString().slice(0,10);
+const addDays = (d,n) => { const t=new Date(d+"T00:00:00"); t.setDate(t.getDate()+n); return t.toISOString().slice(0,10); };
+const dayDiff = (a,b) => Math.round((new Date(b+"T00:00:00") - new Date(a+"T00:00:00"))/864e5);
+
+function blank(){
+  const cards={};
+  DECK.forEach(c => cards[c.i] = {b:1, due:today(), n:0, lapses:0});
+  return {v:1, cards, meta:{streak:0, last:null, reviews:0, newDay:null, newCount:0}};
+}
+function load(){
+  if(!canStore) return blank();
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return blank();
+    const s = JSON.parse(raw);
+    if(!s || s.v!==1 || !s.cards) return blank();
+    DECK.forEach(c => { if(!s.cards[c.i]) s.cards[c.i] = {b:1, due:today(), n:0, lapses:0}; });
+    s.meta = s.meta || {streak:0, last:null, reviews:0, newDay:null, newCount:0};
+    return s;
+  }catch(e){ return blank(); }
+}
+function save(){ if(canStore){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} } }
+
+let S = load();
+
+function touchStreak(){
+  const t = today();
+  if(S.meta.last === t) return;
+  S.meta.streak = (S.meta.last && dayDiff(S.meta.last, t) === 1) ? S.meta.streak + 1 : 1;
+  S.meta.last = t;
+  save();
+}
+
+/* ---------- session ---------- */
+let queue = [], session = {done:0, again:0, good:0, hard:0, byCat:{}}, ahead = false, revealed = false;
+
+function newBudget(){
+  if(S.meta.newDay !== today()){ S.meta.newDay = today(); S.meta.newCount = 0; save(); }
+  return Math.max(0, NEW_PER_DAY - S.meta.newCount);
+}
+/* Due = every previously-seen card past its date, plus up to NEW_PER_DAY unseen ones. */
+function dueList(){
+  const t = today();
+  const seen  = DECK.filter(c => S.cards[c.i].n > 0 && S.cards[c.i].due <= t).map(c=>c.i);
+  const fresh = DECK.filter(c => S.cards[c.i].n === 0).slice(0, newBudget()).map(c=>c.i);
+  return seen.concat(fresh);
+}
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function startSession(useAhead){
+  ahead = !!useAhead;
+  let ids = dueList();
+  if(ahead){
+    // top up to AHEAD_BATCH with the soonest-due cards, ignoring the new-card cap.
+    // Never shrinks a session that already has more than that genuinely due.
+    const set = new Set(ids);
+    const target = Math.max(AHEAD_BATCH, set.size);
+    DECK.slice()
+        .sort((x,y)=> S.cards[x.i].due.localeCompare(S.cards[y.i].due) || x.i - y.i)
+        .forEach(c => { if(set.size < target) set.add(c.i); });
+    ids = [...set];
+  }
+  queue = shuffle(ids);
+  revealed = false;
+  session = {done:0, again:0, good:0, hard:0, byCat:{}};
+  render();
+}
+
+const card = id => DECK.find(c=>c.i===id);
+
+function rate(kind){
+  const id = queue[0], st = S.cards[id], c = card(id);
+  const prev = st.b, wasNew = st.n === 0;
+  if(kind==="again"){ st.b = 1; st.lapses++; session.again++; }
+  else if(kind==="hard"){ st.b = Math.max(1, prev - (prev>1?1:0)); session.hard++; }
+  else { st.b = Math.min(6, prev + 1); session.good++; }
+  st.n++;
+  st.due = addDays(today(), BOX_DAYS[st.b]);
+  S.meta.reviews++;
+  if(wasNew){ newBudget(); S.meta.newCount++; }
+  session.done++;
+  session.byCat[c.c] = session.byCat[c.c] || {n:0, again:0};
+  session.byCat[c.c].n++;
+  if(kind==="again") session.byCat[c.c].again++;
+
+  queue.shift();
+  if(kind==="again"){
+    const at = Math.min(queue.length, 5);   // re-show later in this session, not immediately
+    queue.splice(at, 0, id);
+  }
+  touchStreak();
+  revealed = false;
+  save();
+  render();
+}
+
+/* ---------- review rendering ---------- */
+function renderBoxes(){
+  const counts = {1:0,2:0,3:0,4:0,5:0,6:0};
+  DECK.forEach(c => counts[S.cards[c.i].b]++);
+  const max = Math.max(...Object.values(counts), 1);
+  document.getElementById("boxes").innerHTML = [1,2,3,4,5,6].map(b=>{
+    const pct = Math.round(counts[b]/max*100);
+    const col = b===6 ? "var(--good)" : "var(--blue)";
+    return `<div><div class="t"><i style="height:${pct}%;background:${col}"></i>
+      <span>${counts[b]}</span></div><div class="l">${BOX_LABEL[b]}</div></div>`;
+  }).join("");
+  document.getElementById("streakN").textContent = S.meta.streak;
+}
+
+function render(){
+  renderBoxes();
+  const stage = document.getElementById("stage");
+  const qEl = document.getElementById("queue");
+
+  if(!queue.length){ renderDone(); return; }
+
+  const id = queue[0], c = card(id), st = S.cards[id];
+  stage.innerHTML = `
+    <div class="card">
+      <div class="cbar" style="background:${COLOR[c.c]}">
+        <span>${c.c}</span>
+        <span>Card ${c.i} &nbsp;&middot;&nbsp; ${BOX_LABEL[st.b]}${st.n?" &middot; seen "+st.n+"x":" &middot; new"}</span>
+      </div>
+      <div class="cbody">
+        <p class="q">${c.q}</p>
+        <div class="a ${revealed?'':'hide'}">${c.a}</div>
+      </div>
+      <div class="acts" id="acts"></div>
+    </div>`;
+
+  const acts = document.getElementById("acts");
+  if(!revealed){
+    acts.innerHTML = `<button class="show wide" id="bShow">Show answer</button>`;
+    document.getElementById("bShow").onclick = doReveal;
+  } else {
+    acts.innerHTML =
+      `<button class="again" id="bA">Again<small>back to Box 1</small></button>
+       <button class="hard"  id="bH">Hard<small>${BOX_DAYS[Math.max(1,st.b-(st.b>1?1:0))]}d</small></button>
+       <button class="good"  id="bG">Good<small>${BOX_DAYS[Math.min(6,st.b+1)]}d</small></button>`;
+    document.getElementById("bA").onclick = ()=>rate("again");
+    document.getElementById("bH").onclick = ()=>rate("hard");
+    document.getElementById("bG").onclick = ()=>rate("good");
+  }
+
+  qEl.innerHTML = `<b>${queue.length}</b> left in this session &nbsp;&middot;&nbsp; <b>${session.done}</b> reviewed`
+    + (ahead ? ' &nbsp;&middot;&nbsp; <span style="color:var(--accent)">studying ahead</span>' : '');
+  document.getElementById("btnAhead").style.display = "none";
+}
+
+function doReveal(){ revealed = true; render(); }
+
+function renderDone(){
+  const t = today();
+  const nextDue = DECK.map(c=>S.cards[c.i].due).sort()[0];
+  const upcoming = DECK.filter(c=>S.cards[c.i].due===nextDue).length;
+  const mastered = DECK.filter(c=>S.cards[c.i].b===6).length;
+  const acc = session.done ? Math.round((session.done - session.again)/session.done*100) : 0;
+
+  const rows = Object.entries(session.byCat).sort((a,b)=>b[1].n-a[1].n).map(([cat,v])=>
+    `<tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${COLOR[cat]};margin-right:7px"></span>${cat}</td>
+     <td class="n">${v.n}</td><td class="n">${v.again}</td></tr>`).join("");
+
+  document.getElementById("stage").innerHTML = `
+    <div class="done">
+      <h2>${session.done ? "Session complete" : "Nothing due right now"}</h2>
+      <p>${session.done
+          ? `You reviewed ${session.done} card${session.done===1?"":"s"}. ${mastered} of ${DECK.length} are now in the Mastered box.`
+          : `Next batch of <b>${upcoming}</b> card${upcoming===1?"":"s"} is due ${nextDue===t?"today":nextDue}. Study ahead any time, or switch to <b>Browse by theme</b>.`}</p>
+      ${session.done ? `
+      <div class="stats">
+        <div class="stat"><b>${session.done}</b><span>reviewed</span></div>
+        <div class="stat"><b style="color:var(--good)">${session.good}</b><span>good</span></div>
+        <div class="stat"><b style="color:var(--hard)">${session.hard}</b><span>hard</span></div>
+        <div class="stat"><b style="color:var(--again)">${session.again}</b><span>again</span></div>
+        <div class="stat"><b>${acc}%</b><span>first-pass recall</span></div>
+      </div>
+      ${rows?`<table><thead><tr><th>Category</th><th class="n">Seen</th><th class="n">Missed</th></tr></thead><tbody>${rows}</tbody></table>`:''}
+      ` : ''}
+      <div class="acts" style="padding:22px 0 0">
+        <button class="show" id="bAgain2">${dueList().length ? "Continue &mdash; "+dueList().length+" due" : "Study ahead ("+AHEAD_BATCH+" cards)"}</button>
+      </div>
+    </div>`;
+  document.getElementById("queue").innerHTML =
+    `<b>${DECK.length - mastered}</b> cards still in rotation &nbsp;&middot;&nbsp; <b>${S.meta.reviews}</b> lifetime reviews`;
+  document.getElementById("btnAhead").style.display = "";
+  document.getElementById("bAgain2").onclick = ()=> startSession(dueList().length===0);
+}
+
+/* ---------- browse tab (read-only: never touches S.cards) ---------- */
+let filter = "All", flipped = new Set();
+
+function renderChips(){
+  const counts = {};
+  DECK.forEach(c => counts[c.c] = (counts[c.c]||0)+1);
+  const mk = (name,label,col) =>
+    `<button class="chip ${filter===name?'on':''}" data-f="${name}"
+      style="${filter===name?'background:'+col:''}">${label}</button>`;
+  document.getElementById("chips").innerHTML =
+    mk("All", "All "+DECK.length, "var(--accent)") +
+    THEMES.map(t => mk(t, t+" "+counts[t], COLOR[t])).join("");
+  document.querySelectorAll("#chips .chip").forEach(b => b.onclick = ()=>{
+    filter = b.dataset.f; renderChips(); renderGrid();
+  });
+  const allChip = document.querySelector('#chips .chip[data-f="All"]');
+  if(allChip && filter==="All") allChip.style.color = "#1a1206";
+}
+
+function tileInner(c){
+  const st = S.cards[c.i], open = flipped.has(c.i);
+  return `<div class="tbar" style="background:${COLOR[c.c]}">
+      <span>${c.c} &middot; ${c.i}</span><span class="badge">${BOX_SHORT[st.b]}</span>
+    </div>
+    <div class="tbody">
+      <div class="tq">${c.q}</div>
+      ${open ? `<div class="ta">${c.a}</div>` : ``}
+    </div>`;
+}
+
+function renderGrid(){
+  const shown = filter==="All" ? THEMES : [filter];
+  const html = shown.map(t=>{
+    const cards = DECK.filter(c=>c.c===t);
+    return `<div class="sec"><span class="dot" style="background:${COLOR[t]}"></span>
+        <h3>${t}</h3><span class="cnt">${cards.length} cards</span><span class="rule"></span></div>
+      <div class="grid">${cards.map(c=>
+        `<article class="tile ${flipped.has(c.i)?'flipped':''}" data-id="${c.i}">${tileInner(c)}</article>`
+      ).join("")}</div>`;
+  }).join("");
+  const g = document.getElementById("grid");
+  g.innerHTML = html || `<div class="empty">No cards in this theme.</div>`;
+  g.querySelectorAll(".tile").forEach(el => el.onclick = ()=>{
+    const id = +el.dataset.id;
+    if(flipped.has(id)) flipped.delete(id); else flipped.add(id);
+    el.classList.toggle("flipped", flipped.has(id));
+    el.innerHTML = tileInner(card(id));
+  });
+}
+
+function visibleIds(){
+  return (filter==="All" ? DECK : DECK.filter(c=>c.c===filter)).map(c=>c.i);
+}
+
+/* ---------- tabs ---------- */
+let tab = "review";
+function setTab(t){
+  tab = t;
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on", b.dataset.tab===t));
+  document.getElementById("viewReview").classList.toggle("hide", t!=="review");
+  document.getElementById("viewBrowse").classList.toggle("hide", t!=="browse");
+  if(t==="browse"){ renderChips(); renderGrid(); }   // re-read box levels on every visit
+  else render();
+}
+document.querySelectorAll(".tabs button").forEach(b => b.onclick = ()=> setTab(b.dataset.tab));
+
+/* ---------- controls ---------- */
+document.getElementById("btnAhead").onclick = ()=> startSession(true);
+document.getElementById("btnReset").onclick = ()=>{
+  if(!confirm("Reset all box levels, due dates, and your streak?")) return;
+  S = blank(); save(); startSession(false);
+};
+document.getElementById("btnFlipAll").onclick = ()=>{ visibleIds().forEach(i=>flipped.add(i)); renderGrid(); };
+document.getElementById("btnUnflip").onclick  = ()=>{ visibleIds().forEach(i=>flipped.delete(i)); renderGrid(); };
+
+document.addEventListener("keydown", e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(tab!=="review" || !queue.length) return;           // browse tab ignores shortcuts
+  if(e.code==="Space"||e.code==="Enter"){ e.preventDefault(); if(!revealed) doReveal(); return; }
+  if(!revealed) return;
+  if(e.key==="1") rate("again");
+  else if(e.key==="2") rate("hard");
+  else if(e.key==="3") rate("good");
+});
+
+if(!canStore){
+  document.getElementById("note").innerHTML =
+    "<b>Progress will not persist.</b> This browser is blocking local storage for files opened directly, "
+    + "so box levels reset when you close the tab. Everything else works normally.";
+}
+startSession(false);
+</script>
+</body>
+</html>
