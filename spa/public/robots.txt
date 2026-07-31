@@ -1,4 +1,7 @@
+# Paired with SITE_DISABLED in src/lib/site-status.ts.
+# When re-enabling the site, restore:
+#   Allow: /
+#   Disallow: /aws
+#   Disallow: /aws.html
 User-agent: *
-Allow: /
-Disallow: /aws
-Disallow: /aws.html
+Disallow: /
