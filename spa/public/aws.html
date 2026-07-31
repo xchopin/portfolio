@@ -64,6 +64,25 @@
     padding:7px 14px;font-size:13px;font-weight:600}
   .ghost:hover{color:var(--txt)}
 
+  /* ---- quiz tab ---- */
+  .opt{flex:1 1 100%;text-align:left;white-space:normal;font-weight:500;font-size:14.5px;line-height:1.5;
+    display:flex;gap:12px;align-items:flex-start;padding:13px 15px}
+  .opt .k{flex:0 0 22px;height:22px;margin-top:1px;border-radius:6px;background:var(--panel);
+    border:1px solid var(--line2);color:var(--muted);font-size:11.5px;font-weight:700;line-height:20px;text-align:center}
+  .opt.sel{border-color:var(--accent);background:rgba(255,153,0,.09)}
+  .opt.sel .k{background:var(--accent);border-color:var(--accent);color:#1a1206}
+  .opt.right{border-color:var(--good);background:rgba(46,160,67,.11)}
+  .opt.wrong{border-color:var(--again);background:rgba(229,72,77,.10)}
+  .opt.miss{border-style:dashed}
+  .opt.dim{opacity:.45}
+  .opt:disabled{cursor:default}
+  .opt:disabled:hover{filter:none}
+  .opt b{color:var(--accent);font-weight:700}
+  .opt i{color:var(--blue);font-style:normal}
+  .badge2{background:rgba(255,255,255,.22);border-radius:20px;padding:1px 9px;font-size:10px;
+    font-weight:800;letter-spacing:.05em}
+  .verdict{font-size:13px;font-weight:650;padding:0 26px;margin:-4px 0 14px}
+
   .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:12px;flex-wrap:wrap}
   .queue{font-size:13px;color:var(--muted)}
   .queue b{color:var(--txt)}
@@ -121,13 +140,14 @@
   <header>
     <div>
       <h1>AWS SAA-C03 Flashcards <span>&mdash; 104 cards</span></h1>
-      <p class="sub">Spaced-repetition review, or browse the whole deck by theme</p>
+      <p class="sub">Spaced-repetition review, multiple-choice quiz, or browse the whole deck by theme</p>
     </div>
     <div class="streak"><b id="streakN">0</b>day streak</div>
   </header>
 
   <nav class="tabs">
     <button data-tab="review" class="on">Review</button>
+    <button data-tab="quiz">Quiz</button>
     <button data-tab="browse">Browse by theme</button>
   </nav>
 
@@ -148,6 +168,28 @@
       re-queues it later in the same session. You get up to <b>20 new cards a day</b> so the deck ramps
       instead of dumping all 104 at once &mdash; use <b>Study ahead</b> to override that.
       Shortcuts: <kbd>Space</kbd> reveal &middot; <kbd>1</kbd> again &middot; <kbd>2</kbd> hard &middot; <kbd>3</kbd> good.
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="viewQuiz" class="hide">
+    <div class="bhead">
+      <div class="chips" id="quizChips"></div>
+      <div class="tools">
+        <button class="ghost" id="btnQuizNew">New quiz</button>
+      </div>
+    </div>
+    <div id="quizStage"></div>
+    <div class="bottom">
+      <div class="queue" id="quizScore"></div>
+    </div>
+    <div class="note" id="quizNote">
+      <b>Recognition practice, not recall.</b> Pick the right answer from four options drawn from the
+      <b>same theme</b> &mdash; cross-theme options would give it away. Some cards ask you to
+      <b>choose several</b>: select them all, then Check.
+      Scoring here is <b>completely separate</b> &mdash; a wrong answer never changes your box levels,
+      due dates, or streak.
+      Shortcuts: <kbd>1</kbd>&ndash;<kbd>9</kbd> select &middot; <kbd>Enter</kbd> check or continue.
     </div>
   </section>
 
@@ -199,7 +241,7 @@ const dayDiff = (a,b) => Math.round((new Date(b+"T00:00:00") - new Date(a+"T00:0
 function blank(){
   const cards={};
   DECK.forEach(c => cards[c.i] = {b:1, due:today(), n:0, lapses:0});
-  return {v:1, cards, meta:{streak:0, last:null, reviews:0, newDay:null, newCount:0}};
+  return {v:1, cards, meta:{streak:0, last:null, reviews:0, newDay:null, newCount:0, quiz:{runs:0, best:0}}};
 }
 function load(){
   if(!canStore) return blank();
@@ -210,6 +252,9 @@ function load(){
     if(!s || s.v!==1 || !s.cards) return blank();
     DECK.forEach(c => { if(!s.cards[c.i]) s.cards[c.i] = {b:1, due:today(), n:0, lapses:0}; });
     s.meta = s.meta || {streak:0, last:null, reviews:0, newDay:null, newCount:0};
+    // Backfilled, NOT versioned: bumping v here would make load() reject every
+    // existing save and silently wipe real box levels and streaks.
+    s.meta.quiz = s.meta.quiz || {runs:0, best:0};
     return s;
   }catch(e){ return blank(); }
 }
@@ -437,14 +482,206 @@ function visibleIds(){
   return (filter==="All" ? DECK : DECK.filter(c=>c.c===filter)).map(c=>c.i);
 }
 
+/* ---------- quiz tab (recognition practice; never touches S.cards) ----------
+
+   Single-answer questions are generated for all 104 cards: the stem is the card's
+   question, the correct option is its answer, and the three distractors are answers
+   from other cards in the SAME category (cross-category options are trivially
+   rejectable). The smallest category has 6 cards, so there are always 3 to draw from.
+
+   Multi-answer questions are hand-curated below. Auto-extracting the <b> terms was
+   tried first and shipped visibly broken options - it yielded "both", "Milliseconds"
+   and whole clauses as answer choices - so only cards whose answer enumerates a
+   genuinely discrete set are listed. `ok` are the correct items; `no` are real AWS
+   terms that are wrong for that question (a plausible-but-real distractor teaches
+   more than an invented one). Cards absent from this table fall back to single-answer,
+   so adding cards to DECK can never break the quiz.                                  */
+const MULTI = {
+  1:{ok:["General purpose","Compute optimized","Memory optimized","Storage optimized","Accelerated computing"],
+     no:["Network optimized","Burstable optimized","I/O optimized"]},
+  3:{ok:["Cluster","Spread","Partition"],
+     no:["Dedicated Host","Auto Scaling group","Spot Fleet"]},
+  5:{ok:["Target tracking","Step scaling","Simple scaling","Scheduled","Predictive"],
+     no:["Reactive scaling","Burst scaling","Cooldown scaling"]},
+ 17:{ok:["SSE-S3","SSE-KMS","SSE-C"],
+     no:["SSE-IAM","SSE-CloudHSM","SSE-ACM"]},
+ 26:{ok:["Amazon S3 File Gateway","FSx File Gateway","Volume Gateway","Tape Gateway"],
+     no:["EBS Gateway","Glacier Gateway","NFS Gateway"]},
+ 46:{ok:["Not transitive","No overlapping CIDR blocks","Route tables must be updated on both sides"],
+     no:["Limited to a single Region","Both VPCs must be in the same account","Requires a Transit Gateway"]},
+ 62:{ok:["AWS owned","AWS managed","Customer managed"],
+     no:["Customer supplied","Service linked","Account managed"]},
+ 79:{ok:["Backup and restore","Pilot light","Warm standby","Multi-site active/active"],
+     no:["Cold standby","Hot backup","Rolling failover"]},
+ 82:{ok:["Operational Excellence","Security","Reliability","Performance Efficiency","Cost Optimization","Sustainability"],
+     no:["Scalability","Observability","Automation"]}
+};
+const QUIZ_LEN = 10;
+
+let quiz = null, qFilter = "All";
+
+/* Options are addressed by index everywhere, so option text never has to be escaped
+   into a data- attribute. For single-answer questions an option IS a card id; for
+   multi-answer it is a curated string. */
+function makeQ(id){
+  const c = card(id), m = MULTI[id];
+  if(m){
+    const opts = shuffle(m.ok.concat(shuffle(m.no.slice()).slice(0,3)));
+    return {id, multi:true, opts, ok:new Set(m.ok)};
+  }
+  const others = shuffle(DECK.filter(x=>x.c===c.c && x.i!==id).map(x=>x.i)).slice(0,3);
+  return {id, multi:false, opts:shuffle([id].concat(others)), ok:new Set([id])};
+}
+
+function startQuiz(){
+  const pool = (qFilter==="All" ? DECK : DECK.filter(c=>c.c===qFilter)).map(c=>c.i);
+  quiz = {queue: shuffle(pool).slice(0, QUIZ_LEN).map(makeQ),
+          idx:0, sel:new Set(), graded:false, right:0, wrong:0, byCat:{}};
+  renderQuiz();
+}
+
+function checkQuiz(){
+  const q = quiz.queue[quiz.idx];
+  const hit = quiz.sel.size===q.ok.size && [...quiz.sel].every(o=>q.ok.has(o));
+  quiz.graded = true;
+  if(hit) quiz.right++; else quiz.wrong++;
+  const cat = card(q.id).c;
+  quiz.byCat[cat] = quiz.byCat[cat] || {n:0, miss:0};
+  quiz.byCat[cat].n++;
+  if(!hit) quiz.byCat[cat].miss++;
+  renderQuiz();
+}
+
+function nextQuiz(){
+  quiz.idx++; quiz.sel = new Set(); quiz.graded = false;
+  if(quiz.idx >= quiz.queue.length){
+    const total = quiz.right + quiz.wrong;
+    S.meta.quiz.runs++;
+    const pct = total ? Math.round(quiz.right/total*100) : 0;
+    if(pct > S.meta.quiz.best) S.meta.quiz.best = pct;
+    save();                       // only meta.quiz changed - S.cards is untouched
+  }
+  renderQuiz();
+}
+
+function renderQuizChips(){
+  const counts = {};
+  DECK.forEach(c => counts[c.c] = (counts[c.c]||0)+1);
+  const mk = (name,label,col) =>
+    `<button class="chip ${qFilter===name?'on':''}" data-f="${name}"
+      style="${qFilter===name?'background:'+col:''}">${label}</button>`;
+  document.getElementById("quizChips").innerHTML =
+    mk("All", "All "+DECK.length, "var(--accent)") +
+    THEMES.map(t => mk(t, t+" "+counts[t], COLOR[t])).join("");
+  document.querySelectorAll("#quizChips .chip").forEach(b => b.onclick = ()=>{
+    qFilter = b.dataset.f; renderQuizChips(); startQuiz();
+  });
+  const allChip = document.querySelector('#quizChips .chip[data-f="All"]');
+  if(allChip && qFilter==="All") allChip.style.color = "#1a1206";
+}
+
+function renderQuiz(){
+  if(!quiz){ startQuiz(); return; }
+  if(quiz.idx >= quiz.queue.length){ renderQuizDone(); return; }
+
+  const q = quiz.queue[quiz.idx], c = card(q.id), n = q.ok.size;
+  const hit = quiz.graded && quiz.sel.size===q.ok.size && [...quiz.sel].every(o=>q.ok.has(o));
+
+  const opts = q.opts.map((o,k)=>{
+    const isOk = q.ok.has(o), isSel = quiz.sel.has(o);
+    let cls = "opt";
+    if(!quiz.graded) cls += isSel ? " sel" : "";
+    else if(isSel && isOk)  cls += " right";
+    else if(isSel && !isOk) cls += " wrong";
+    else if(isOk)           cls += " right miss";   // correct but not picked
+    else                    cls += " dim";
+    return `<button class="${cls}" data-o="${k}"${quiz.graded?" disabled":""}>
+        <span class="k">${k+1}</span><span>${q.multi ? o : card(o).a}</span></button>`;
+  }).join("");
+
+  document.getElementById("quizStage").innerHTML = `
+    <div class="card">
+      <div class="cbar" style="background:${COLOR[c.c]}">
+        <span>${c.c}</span>
+        <span>${quiz.idx+1} / ${quiz.queue.length}${q.multi?` &nbsp;&middot;&nbsp; <span class="badge2">CHOOSE ${n}</span>`:""}</span>
+      </div>
+      <div class="cbody" style="padding-bottom:18px">
+        <p class="q">${c.q}</p>
+      </div>
+      ${quiz.graded ? `<div class="verdict" style="color:${hit?'var(--good)':'var(--again)'}">
+        ${hit ? "Correct" : (q.multi ? "Not quite &mdash; the dashed rows were also required" : "Not quite &mdash; the correct answer is outlined in green")}</div>` : ``}
+      <div class="acts">${opts}</div>
+      ${quiz.graded ? `<div class="cbody" style="padding-top:0"><div class="a" style="margin-top:0">${c.a}</div></div>` : ``}
+      <div class="acts" id="quizActs" style="padding-top:0"></div>
+    </div>`;
+
+  document.querySelectorAll("#quizStage .opt").forEach(b => b.onclick = ()=>{
+    if(quiz.graded) return;
+    const o = q.opts[+b.dataset.o];
+    if(q.multi){
+      if(quiz.sel.has(o)) quiz.sel.delete(o); else quiz.sel.add(o);
+      renderQuiz();
+    } else {
+      quiz.sel = new Set([o]);            // single-answer grades on click
+      checkQuiz();
+    }
+  });
+
+  const acts = document.getElementById("quizActs");
+  if(quiz.graded){
+    const last = quiz.idx === quiz.queue.length-1;
+    acts.innerHTML = `<button class="show wide" id="bQNext">${last?"See results":"Next question"}</button>`;
+    document.getElementById("bQNext").onclick = nextQuiz;
+  } else if(q.multi){
+    acts.innerHTML = `<button class="show wide" id="bQCheck"${quiz.sel.size?"":" disabled"}>Check
+      &mdash; ${quiz.sel.size} of ${n} selected</button>`;
+    document.getElementById("bQCheck").onclick = ()=>{ if(quiz.sel.size) checkQuiz(); };
+  } else acts.innerHTML = "";
+
+  document.getElementById("quizScore").innerHTML =
+    `<b>${quiz.right}</b> correct &nbsp;&middot;&nbsp; <b>${quiz.wrong}</b> wrong`
+    + (qFilter!=="All" ? ` &nbsp;&middot;&nbsp; <span style="color:var(--accent)">${qFilter} only</span>` : "");
+}
+
+function renderQuizDone(){
+  const total = quiz.right + quiz.wrong;
+  const pct = total ? Math.round(quiz.right/total*100) : 0;
+  const rows = Object.entries(quiz.byCat).sort((a,b)=>b[1].n-a[1].n).map(([cat,v])=>
+    `<tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${COLOR[cat]};margin-right:7px"></span>${cat}</td>
+     <td class="n">${v.n}</td><td class="n">${v.miss}</td></tr>`).join("");
+
+  document.getElementById("quizStage").innerHTML = `
+    <div class="done">
+      <h2>Quiz complete</h2>
+      <p>You scored ${quiz.right} out of ${total}. Your box levels and streak are unchanged &mdash;
+         quiz results are tracked separately.</p>
+      <div class="stats">
+        <div class="stat"><b style="color:var(--good)">${quiz.right}</b><span>correct</span></div>
+        <div class="stat"><b style="color:var(--again)">${quiz.wrong}</b><span>wrong</span></div>
+        <div class="stat"><b>${pct}%</b><span>this run</span></div>
+        <div class="stat"><b>${S.meta.quiz.best}%</b><span>best ever</span></div>
+        <div class="stat"><b>${S.meta.quiz.runs}</b><span>quizzes taken</span></div>
+      </div>
+      ${rows?`<table><thead><tr><th>Category</th><th class="n">Asked</th><th class="n">Missed</th></tr></thead><tbody>${rows}</tbody></table>`:''}
+      <div class="acts" style="padding:22px 0 0">
+        <button class="show" id="bQAgain">New quiz${qFilter!=="All"?" &mdash; "+qFilter:""}</button>
+      </div>
+    </div>`;
+  document.getElementById("quizScore").innerHTML =
+    `<b>${S.meta.quiz.runs}</b> quizzes taken &nbsp;&middot;&nbsp; best <b>${S.meta.quiz.best}%</b>`;
+  document.getElementById("bQAgain").onclick = startQuiz;
+}
+
 /* ---------- tabs ---------- */
 let tab = "review";
 function setTab(t){
   tab = t;
   document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on", b.dataset.tab===t));
   document.getElementById("viewReview").classList.toggle("hide", t!=="review");
+  document.getElementById("viewQuiz").classList.toggle("hide", t!=="quiz");
   document.getElementById("viewBrowse").classList.toggle("hide", t!=="browse");
   if(t==="browse"){ renderChips(); renderGrid(); }   // re-read box levels on every visit
+  else if(t==="quiz"){ renderQuizChips(); renderQuiz(); }
   else render();
 }
 document.querySelectorAll(".tabs button").forEach(b => b.onclick = ()=> setTab(b.dataset.tab));
@@ -452,14 +689,34 @@ document.querySelectorAll(".tabs button").forEach(b => b.onclick = ()=> setTab(b
 /* ---------- controls ---------- */
 document.getElementById("btnAhead").onclick = ()=> startSession(true);
 document.getElementById("btnReset").onclick = ()=>{
-  if(!confirm("Reset all box levels, due dates, and your streak?")) return;
+  if(!confirm("Reset all box levels, due dates, your streak, and quiz stats?")) return;
   S = blank(); save(); startSession(false);
 };
+document.getElementById("btnQuizNew").onclick = startQuiz;
 document.getElementById("btnFlipAll").onclick = ()=>{ visibleIds().forEach(i=>flipped.add(i)); renderGrid(); };
 document.getElementById("btnUnflip").onclick  = ()=>{ visibleIds().forEach(i=>flipped.delete(i)); renderGrid(); };
 
 document.addEventListener("keydown", e=>{
   if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(tab==="quiz"){
+    if(!quiz || quiz.idx >= quiz.queue.length) return;
+    const q = quiz.queue[quiz.idx];
+    if(e.code==="Space"||e.code==="Enter"){
+      e.preventDefault();
+      if(quiz.graded) nextQuiz();
+      else if(q.multi && quiz.sel.size) checkQuiz();
+      return;
+    }
+    if(quiz.graded) return;
+    const k = parseInt(e.key,10);
+    if(!(k>=1 && k<=q.opts.length)) return;
+    const o = q.opts[k-1];
+    if(q.multi){
+      if(quiz.sel.has(o)) quiz.sel.delete(o); else quiz.sel.add(o);
+      renderQuiz();
+    } else { quiz.sel = new Set([o]); checkQuiz(); }
+    return;
+  }
   if(tab!=="review" || !queue.length) return;           // browse tab ignores shortcuts
   if(e.code==="Space"||e.code==="Enter"){ e.preventDefault(); if(!revealed) doReveal(); return; }
   if(!revealed) return;
