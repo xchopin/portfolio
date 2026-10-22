@@ -6,4 +6,4 @@
 //
 // Flip this one line to bring the site back, then revert public/robots.txt
 // (see the note at the top of that file). Nothing else to change.
-export const SITE_DISABLED = true;
+export const SITE_DISABLED = false;

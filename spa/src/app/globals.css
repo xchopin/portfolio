@@ -3,27 +3,42 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    /* X's own typeface (Chirp) is proprietary; the system stack is the closest match. */
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-    --font-display: var(--font-poppins), var(--font-geist-sans), sans-serif;
+}
+
+/* Theme-dependent colors resolve through the vars below, hence `inline`. */
+@theme inline {
+    --color-canvas: var(--background);
+    --color-ink: var(--foreground);
+    --color-muted: var(--muted);
+    --color-line: var(--border);
+    --color-card: var(--card);
+    --color-hover: var(--hover);
+    --color-accent: #1d9bf0;
 }
 
 :root {
     --background: #ffffff;
-    --foreground: #1e1e58;
+    --foreground: #0f1419;
+    --muted: #536471;
+    --border: #eff3f4;
+    --card: #f7f9f9;
+    --hover: rgba(15, 20, 25, 0.1);
 }
 
 .dark {
-    --background: #10101a;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #e7e9ea;
+    --muted: #71767b;
+    --border: #2f3336;
+    --card: #16181c;
+    --hover: rgba(231, 233, 234, 0.1);
 }
 
 body {
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
-}
-
-h1, h2, h3 {
-    font-family: var(--font-display);
 }

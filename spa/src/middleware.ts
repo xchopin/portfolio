@@ -7,7 +7,7 @@ import { SITE_DISABLED } from "@/lib/site-status";
 const ALLOWED = new Set(["/aws", "/aws.html", "/robots.txt", "/favicon.ico"]);
 
 // Anything ending in a file extension is a static asset (public/resume/*.pdf,
-// photo.png, blob.png, ...). Those must not leak while the site is down.
+// blob-photo.png, blob.png, ...). Those must not leak while the site is down.
 const HAS_EXTENSION = /\.[a-z0-9]+$/i;
 
 // Route-convention images Next generates from src/app/*-image.tsx.

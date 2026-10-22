@@ -1,22 +1,10 @@
 
 import type { Metadata } from "next";
-import Footer from "@/components/footer";
-import Header from "@/components/header";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
+import LayoutShell from "@/components/x/layout-shell";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { SITE_DISABLED } from "@/lib/site-status";
-
-const poppins = Poppins({
-    weight: ["600", "700"],
-    subsets: ["latin"],
-    variable: "--font-poppins",
-});
-
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
     variable: "--font-geist-mono",
@@ -69,18 +57,14 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
             suppressHydrationWarning
             // Font variables live on <html> so the `@theme` block in globals.css,
             // which is :root-scoped, can resolve them.
-            className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable}`}
+            className={geistMono.variable}
         >
             <body className="antialiased">
                 <ThemeProvider attribute="class" enableSystem>
                     {SITE_DISABLED ? (
                         children
                     ) : (
-                        <>
-                            <Header />
-                            {children}
-                            <Footer />
-                        </>
+                        <LayoutShell>{children}</LayoutShell>
                     )}
                 </ThemeProvider>
             </body>
