@@ -16,6 +16,9 @@ type PostProps = {
     verified?: boolean;
     pinned?: boolean;
     media?: ReactNode;
+    // Draws the thread line from the avatar down to the reply rendered right after this post.
+    thread?: boolean;
+    replyingTo?: string;
     // Decorative counts for the action row: [replies, reposts, likes, views].
     stats?: [string, string, string, string];
 };
@@ -28,6 +31,8 @@ export default function Post({
     verified = true,
     pinned = false,
     media,
+    thread = false,
+    replyingTo,
     stats = ["", "", "", ""],
 }: PostProps) {
     const actions = [
@@ -38,7 +43,7 @@ export default function Post({
     ];
 
     return (
-        <article className="border-b border-line px-4 pt-3 transition-colors hover:bg-ink/[0.03]">
+        <article className={`${thread ? "" : "border-b border-line"} px-4 pt-3 transition-colors hover:bg-ink/[0.03]`}>
             {pinned && (
                 <div className="mb-1 flex items-center gap-3 pl-6 text-[13px] font-bold text-muted">
                     <RiPushpin2Fill size={14} />
@@ -46,7 +51,10 @@ export default function Post({
                 </div>
             )}
             <div className="flex gap-3">
-                <ProfileAvatar size={40} className="h-10 w-10" />
+                <div className="flex shrink-0 flex-col items-center">
+                    <ProfileAvatar size={40} className="h-10 w-10" />
+                    {thread && <div className="mt-1 w-0.5 flex-1 bg-line" />}
+                </div>
                 <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1 text-[15px] leading-5">
                         <span className="truncate font-bold">{name}</span>
@@ -59,6 +67,11 @@ export default function Post({
                             </>
                         )}
                     </div>
+                    {replyingTo && (
+                        <p className="text-[15px] leading-5 text-muted">
+                            Replying to <span className="text-accent">@{replyingTo}</span>
+                        </p>
+                    )}
                     <div className="mt-0.5 text-[15px] leading-5 whitespace-pre-line">{children}</div>
                     {media && (
                         <div className="mt-3 overflow-hidden rounded-2xl border border-line">{media}</div>
